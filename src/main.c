@@ -9,13 +9,15 @@
 #define texHeight 64
 #define screenWidth 624
 #define screenHeight 624
-#define UP 119
-#define DOWN 115
-#define LEFT 97
-#define RIGHT 100
+#define UP 13
+#define DOWN 1
+#define LEFT 0
+#define RIGHT 2
 #define PI 3.141592653
 #define FOV 70
 #define RAD 0.0174532925
+#define ROTATE_L 123
+#define ROTATE_R 124
 
 int worldMap[mapHeight][mapWidth]=
 {
@@ -32,7 +34,7 @@ int worldMap[mapHeight][mapWidth]=
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -89,7 +91,7 @@ void draw_line(t_settings *data, double angle, int line_lenght, long color)
 		if (x1 < screenWidth && x1 > 0  && y1 < screenHeight && y1 > 0)
 			my_mlx_pixel_put(&data->img, x1, y1, color);
 	}
-	printf("x value = %d, y value = %d\n", x1, y1);
+	// printf("x value = %d, y value = %d\n", x1, y1);
 }
 
 void draw_line2(t_settings *data, double angle, int line_lenght, long color)
@@ -104,56 +106,137 @@ void draw_line2(t_settings *data, double angle, int line_lenght, long color)
 		if (x1 < screenWidth && x1 > 0  && y1 < screenHeight && y1 > 0)
 			my_mlx_pixel_put(&data->img, x1, y1, color);
 	}
-	printf("x value = %d, y value = %d\n", x1, y1);
+	// printf("x value = %d, y value = %d\n", x1, y1);
+}
+void draw_point(t_settings *data, int x0, int y0)
+{
+	int x1;
+	int y1;
+
+	for(int i = 0; i < 360; i += 1)
+	{
+		for (int r = 0; r < 4; r++)
+		{
+			x1 = r * cos(i * PI / 180);
+			y1 = r * sin(i * PI / 180);
+			// if (0 <= x0 && x0 <= screenWidth)
+			if (0 <= x0 + x1 && x0 + x1 <= screenWidth && 0 <= y0 + y1 && y0 + y1 <= screenHeight)
+				my_mlx_pixel_put(&data->img, x0 + x1, y0 + y1, 0x00658354);
+		}
+	}
+}
+
+void draw_sky(t_settings *data)
+{
+	for(int x = 0; x < screenHeight; x += 1)
+	{
+		for (int y = 0; y < screenWidth / 2; y++)
+				my_mlx_pixel_put(&data->img, x, y, 0x0000FFFF);
+	}
+}
+
+void draw_ground(t_settings *data)
+{
+	for(int x = 0; x < screenHeight; x += 1)
+	{
+		for (int y = 0; y < screenWidth / 2; y++)
+				my_mlx_pixel_put(&data->img, x, screenWidth - y, 0x00A0522D);
+	}
 }
 
 void draw_rays(t_settings *data)
 {
-	int x1;
-	int y1;
-	int ray_y;
-	int ray_x;
-	int dx;
-	int dy;
-	double angle;
-	float y_offset;
-	float x_offset;
 
-	// for(int i = 0; i < FOV; i += 1)
-	// {
-	// 	angle = data->angle + (FOV / 2 - i) * RAD;
-	// 	draw_line(data, angle, 600, 0x00AAFF00);
-	// }
+	double angle;
 	int nextY;
-	int x_off;
-	int y_off;
+	int nextX;
+	double rad;
+	int ray_length_y;
+	int ray_length_x;
+	int deltaX;
+	int deltaY;
 	// horizontal
-	if (data->angle > PI)
+	for(int i = 0; i < screenWidth; i += 1)
 	{
-		float Tan=tan(data->angle * PI / 180);
-		//next y value; 300 <- 312
-		ray_y = (int)data->posY / 26 * 26;
-		ray_x = (data->posY - ray_y) * Tan + data->posX;
-		x_off = 64; y_off = -x_off * Tan;
-		printf("nextY = %d\n", ray_y);
-		printf("nextX = %d\n", ray_x);
-		printf("posX = %f\n", data->posX);
-		int dof;
-		int mx;
-		int my;
-		int mp;
-		for(int i = 0; i < 360; i += 1)
-    	{
-			for (int r = 0; r < 3; r++)
+		angle = data->angle + ((float)FOV / 2 - ((float)i / screenWidth * FOV)) * RAD;
+		if (angle > 2 * PI)
+			angle -= 2 * PI;
+		if (angle < 0)
+			angle += 2 * PI;
+		for (int z = 0; z < mapHeight; z += 1)
+		{
+			if (angle == 1.5 * PI || angle == 0.5 * PI)
+				continue ; 
+			if (0.5 * PI < angle && angle < 1.5 * PI)
 			{
-				x1 = r * cos(i * PI / 180);
-				y1 = r * sin(i * PI / 180);
-				my_mlx_pixel_put(&data->img, ray_x + x1, ray_y + y1, 0x00FF0000);
+				nextY = (((((int)data->posY / (screenHeight / mapHeight)) - z) - 0.0001)) * (screenHeight / mapHeight);
+				rad = angle - PI;
+				nextX = data->posX - tan(rad) * abs((int)data->posY - nextY);
+			}
+			else
+			{
+				nextY = ((int)data->posY / (screenHeight / mapHeight) + z + 1) * (screenHeight / mapHeight);
+				rad = angle;
+				nextX = data->posX + tan(rad) * abs((int)data->posY - nextY);
+			}
+			deltaX = abs((int)data->posX - nextX); 
+			deltaY = abs((int)data->posY - nextY);
+			ray_length_y = sqrt(deltaX * deltaX + deltaY * deltaY);
+			if (nextX > 0 && nextX < 624 && nextY > 0 && nextY < 624)
+			{
+				if (worldMap[nextY / 26][nextX / 26] != 0)
+					break ;
+			}
+			ray_length_y = 1000000000;
+		}
+		for (int z = 0; z < mapWidth; z += 1)
+		{
+			if (angle == 2 * PI || angle == 0)
+				continue ;
+			if (angle > PI)
+			{
+				nextX = (((((int)data->posX / (screenHeight / mapHeight)) - z) - 0.0001)) * (screenHeight / mapHeight);
+				rad = 2 * PI - angle;
+				nextY = data->posY + abs((int)data->posX - nextX) / tan(rad);
+			}
+			else
+			{
+				nextX = ((int)data->posX / (screenHeight / mapHeight) + z + 1) * (screenHeight / mapHeight);
+				rad = angle;
+				nextY = data->posY + abs((int)data->posX - nextX) / tan(rad);
+			}
+			deltaX = abs((int)data->posX - nextX); 
+			deltaY = abs((int)data->posY - nextY);
+			ray_length_x = sqrt(deltaX * deltaX + deltaY * deltaY);
+			if (nextX > 0 && nextX < 624 && nextY > 0 && nextY < 624)
+			{
+				if (worldMap[nextY / 26][nextX / 26] != 0)
+					break ;
+			}
+			ray_length_x = 10000000;
+		}
+		int shortest;
+		if (ray_length_x < ray_length_y)
+			shortest = ray_length_x;
+		else
+			shortest = ray_length_y;
+		int line_heigth = (26 * 624) / shortest;
+		if (line_heigth > 624)
+			line_heigth = 624;
+		for (int z = 0; z < screenHeight; z++)
+		{
+			if (screenHeight - z <  (screenHeight + line_heigth) / 2)
+			{
+				for (int ir = 0; ir < line_heigth; ir++)
+					my_mlx_pixel_put(&data->img, i, screenHeight - z - ir, 0x00F0F0D3);
+				z = screenHeight;
+				break ;
 			}
 		}
+		// draw_line(data, angle, shortest, 0x00FF0000);
 	}
-
 }
+
 void draw_player(t_settings *data)
 {
 	int x1;
@@ -166,37 +249,41 @@ void draw_player(t_settings *data)
 		{
             x1 = r * cos(i * PI / 180);
             y1 = r * sin(i * PI / 180);
-            my_mlx_pixel_put(&data->img, data->posX + x1, data->posY + y1, 0x00658354);
+            my_mlx_pixel_put(&data->img, data->posX + x1, data->posY + y1, 0x00ffff00);
       	}
 	}
+	draw_line(data, data->angle, 50, 0x00ffff00);
 }
 
 int	plot_frame(t_settings *data)
 {
-	for (int x = 0; x < screenWidth; x++)
-	{
-		for (int y = 0; y < screenHeight ; y++)
-		{
-			int type = worldMap[y / 26][x / 26];
-			if (type != 0 && x)
-				my_mlx_pixel_put(&data->img, x, y, 0x00FFFFFF);
-			else
+	// for (int x = 0; x < screenWidth; x++)
+	// {
+	// 	for (int y = 0; y < screenHeight ; y++)
+	// 	{
+	// 		int type = worldMap[y / 26][x / 26];
+	// 		if (type != 0 && x)
+	// 			my_mlx_pixel_put(&data->img, x, y, 0x00FFFFFF);
+	// 		else
 
-				my_mlx_pixel_put(&data->img, x, y, 0x00000000);
-			if (x % 26 == 0 || y % 26 == 0)
-				my_mlx_pixel_put(&data->img, x, y, 0x00808080);
-		}
-	}
-	draw_player(data);
+	// 			my_mlx_pixel_put(&data->img, x, y, 0x00000000);
+	// 		if (x % 26 == 0 || y % 26 == 0)
+	// 			my_mlx_pixel_put(&data->img, x, y, 0x00808080);
+	// 	}
+	// }
+	// draw_player(data);
+	// draw_line(data, data->angle, 800, 0x00FF0000);
+	draw_sky(data);
+	draw_ground(data);
 	draw_rays(data);
-	draw_line(data, data->angle, 30, 0x00FF0000);
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	return (1);
 }
 
 int	key_press(int key_code, t_settings *data)
 {
-	if (key_code == LEFT)
+	// printf("key presse = %d\n", key_code);
+	if (key_code == ROTATE_L)
 	{
 		data->angle += 0.1;
 		if (data->angle > 2 * PI)
@@ -204,7 +291,7 @@ int	key_press(int key_code, t_settings *data)
 		data->deltaX = sin(data->angle) * 5;
 		data->deltaY = cos(data->angle) * 5;
 	}
-	if (key_code == RIGHT)
+	if (key_code == ROTATE_R)
 	{
 		data->angle -= 0.1;
 		if (data->angle < 0)
@@ -222,8 +309,17 @@ int	key_press(int key_code, t_settings *data)
 		data->posY -= data->deltaY;
 		data->posX -= data->deltaX;
 	}
+	// if (key_code == LEFT)
+	// {
+	// 	data->posY += data->deltaY;
+	// 	data->posX -= data->deltaX;
+	// }
+    // if (key_code == RIGHT)
+	// {
+	// 	data->posY -= data->deltaY;
+	// 	data->posX -= data->deltaX;
+	// }
 	plot_frame(data);
-	// printf("deltaX = %f, deltaY = %f\nAngle = %f\n", data->deltaX, data->deltaY, data->angle);
 	return (key_code);
 }
 
@@ -240,13 +336,13 @@ int	main(void)
 	data->img.img = mlx_new_image(data->mlx, screenWidth, screenHeight);
 	data->img.addr = mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel, &data->img.line_length,
 								&data->img.endian);
-	data->posX = 300;
-	data->posY = 300;
+	data->posX = 320;
+	data->posY = 360;
 	data->dirX = -1;
 	data->dirY = 0;
 	data->deltaX = 0;
 	data->deltaY = -5;
-	data->angle = 1.5 * PI;
+	data->angle = PI;
 	data->planeX = 0;
 	data->planeY = 0.66;
 	plot_frame(data);

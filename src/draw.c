@@ -1,126 +1,108 @@
-void draw()
+void draw_rays(t_settings *data)
 {
-    for(int x = 0; x < w; x++)
-    {
-      //calculate ray position and direction
-      double cameraX = 2 * x / (double)w - 1; //x-coordinate in camera space
-      double rayDirX = dirX + planeX*cameraX;
-      double rayDirY = dirY + planeY*cameraX;
+	int x1;
+	int y1;
+	int ray_y;
+	int ray_x;
+	int dx;
+	int dy;
+	double angle;
+	float y_offset;
+	float x_offset;
 
-      //which box of the map we're in
-      int mapX = int(posX);
-      int mapY = int(posY);
-
-      //length of ray from current position to next x or y-side
-      double sideDistX;
-      double sideDistY;
-
-      //length of ray from one x or y-side to next x or y-side
-      double deltaDistX = (rayDirX == 0) ? 1e30 : std::abs(1 / rayDirX);
-      double deltaDistY = (rayDirY == 0) ? 1e30 : std::abs(1 / rayDirY);
-      double perpWallDist;
-
-      //what direction to step in x or y-direction (either +1 or -1)
-      int stepX;
-      int stepY;
-
-      int hit = 0; //was there a wall hit?
-      int side; //was a NS or a EW wall hit?
-
-      //calculate step and initial sideDist
-      if(rayDirX < 0)
-      {
-        stepX = -1;
-        sideDistX = (posX - mapX) * deltaDistX;
-      }
-      else
-      {
-        stepX = 1;
-        sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-      }
-      if(rayDirY < 0)
-      {
-        stepY = -1;
-        sideDistY = (posY - mapY) * deltaDistY;
-      }
-      else
-      {
-        stepY = 1;
-        sideDistY = (mapY + 1.0 - posY) * deltaDistY;
-      }
-      //perform DDA
-      while (hit == 0)
-      {
-        //jump to next map square, either in x-direction, or in y-direction
-        if(sideDistX < sideDistY)
-        {
-          sideDistX += deltaDistX;
-          mapX += stepX;
-          side = 0;
-        }
-        else
-        {
-          sideDistY += deltaDistY;
-          mapY += stepY;
-          side = 1;
-        }
-        //Check if ray has hit a wall
-        if(worldMap[mapX][mapY] > 0) hit = 1;
-      }
-
-      //Calculate distance of perpendicular ray (Euclidean distance would give fisheye effect!)
-      if(side == 0) perpWallDist = (sideDistX - deltaDistX);
-      else          perpWallDist = (sideDistY - deltaDistY);
-
-      //Calculate height of line to draw on screen
-      int lineHeight = (int)(h / perpWallDist);
-
-
-      int pitch = 100;
-
-      //calculate lowest and highest pixel to fill in current stripe
-      int drawStart = -lineHeight / 2 + h / 2 + pitch;
-      if(drawStart < 0) drawStart = 0;
-      int drawEnd = lineHeight / 2 + h / 2 + pitch;
-      if(drawEnd >= h) drawEnd = h - 1;
-
-      //texturing calculations
-      int texNum = worldMap[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
-
-      //calculate value of wallX
-      double wallX; //where exactly the wall was hit
-      if(side == 0) wallX = posY + perpWallDist * rayDirY;
-      else          wallX = posX + perpWallDist * rayDirX;
-      wallX -= floor((wallX));
-
-      //x coordinate on the texture
-      int texX = int(wallX * double(texWidth));
-      if(side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
-      if(side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
-
-      // TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
-      // How much to increase the texture coordinate per screen pixel
-      double step = 1.0 * texHeight / lineHeight;
-      // Starting texture coordinate
-      double texPos = (drawStart - pitch - h / 2 + lineHeight / 2) * step;
-      for(int y = drawStart; y < drawEnd; y++)
-      {
-        // Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-        int texY = (int)texPos & (texHeight - 1);
-        texPos += step;
-        Uint32 color = texture[texNum][texHeight * texY + texX];
-        //make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-        if(side == 1) color = (color >> 1) & 8355711;
-        buffer[y][x] = color;
-      }
-    }
-
-    // drawBuffer(buffer[0]);
-    // for(int y = 0; y < h; y++) for(int x = 0; x < w; x++) buffer[y][x] = 0; //clear the buffer instead of cls()
-    //timing for input and FPS counter
-    // oldTime = time;
-    // time = getTicks();
-    // double frameTime = (time - oldTime) / 1000.0; //frametime is the time this frame has taken, in seconds
-    // print(1.0 / frameTime); //FPS counter
-    // redraw();
+	// for(int i = 0; i < FOV; i += 1)
+	// {
+	// 	angle = data->angle + (FOV / 2 - i) * RAD;
+	// 	draw_line(data, angle, 600, 0x00AAFF00);
+	// }
+	int nextY;
+	int nextX;
+	int x_off;
+	int y_off;
+	double rad;
+	int ray_length_y;
+	int ray_length_x;
+	int deltaX;
+	int deltaY;
+	// horizontal
+	// if (0.5 * PI < data->angle && data->angle < 1.5 * PI)
+	// {
+	// 	printf("-----------------------\n");
+	// 	printf("angle = %f\n", data->angle);
+	// 	nextY = (int)data->posY / (screenHeight / mapHeight) * (screenHeight / mapHeight);
+	// 	printf("nextY = %d\n", nextY);
+	// 	rad = data->angle - PI;
+	// 	printf("rad = %f\ndeltaY = %d\n", rad,abs((int)data->posY - nextY));
+	// 	nextX = data->posX - tan(rad) * abs((int)data->posY - nextY);
+	// 	printf("nextX = %d\n", nextX);
+	// 	for(int i = 0; i < 360; i += 1)
+	// 	{
+	// 		for (int r = 0; r < 4; r++)
+	// 		{
+	// 			x1 = r * cos(i * PI / 180);
+	// 			y1 = r * sin(i * PI / 180);
+	// 			my_mlx_pixel_put(&data->img, nextX + x1, nextY + y1, 0x00658354);
+	// 		}
+	// 	}
+	// }
+	for(int i = 0; i < FOV; i += 1)
+	{
+		angle = data->angle + (FOV / 2 - i) * RAD;
+		for (int z = 0; z < mapHeight; z += 1)
+		{
+			if (0.5 * PI < angle && angle < 1.5 * PI)
+			{
+				nextY = ((int)data->posY / (screenHeight / mapHeight) - z) * (screenHeight / mapHeight);
+				rad = angle - PI;
+				nextX = data->posX - tan(rad) * abs((int)data->posY - nextY);
+			}
+			else
+			{
+				nextY = ((int)data->posY / (screenHeight / mapHeight) + z + 1) * (screenHeight / mapHeight);
+				rad = angle;
+				nextX = data->posX + tan(rad) * abs((int)data->posY - nextY);
+			}
+			deltaX = abs((int)data->posX - nextX); 
+			deltaY = abs((int)data->posY - nextY);
+			ray_length_y = sqrt(deltaX * deltaX + deltaY * deltaY);
+			if (worldMap[nextY / 26][nextX / 26] != 0)
+				break ;
+		}
+		draw_line(data, angle, ray_length_y, 0x00FF0000);
+	}
+	// for(int i = 0; i < FOV; i += 1)
+	// {
+		// angle = data->angle + (FOV / 2 - i) * RAD;
+		// angle = data->angle;
+		// for (int z = 0; z < mapHeight; z += 1)
+		// {
+		// 	if (angle > PI)
+		// 	{
+		// 		nextX = ((int)data->posY / (screenHeight / mapHeight) - z) * (screenHeight / mapHeight);
+		// 		rad = 2 * PI - angle;
+		// 		nextY = data->posY + abs((int)data->posX - nextX) / tan(rad);
+		// 		draw_point(data, nextX, nextY);
+		// 	}
+		// 	else
+		// 	{
+		// 		nextX = ((int)data->posY / (screenHeight / mapHeight) + z + 1) * (screenHeight / mapHeight);
+		// 		rad = angle;
+		// 		nextY = data->posY + abs((int)data->posX - nextX) / tan(rad);
+		// 		draw_point(data, nextX, nextY);
+		// 	}
+		// 	// deltaX = abs((int)data->posX - nextX); 
+		// 	// deltaY = abs((int)data->posY - nextY);
+		// 	// ray_length_x = sqrt(deltaX * deltaX + deltaY * deltaY);
+		// 	// if (worldMap[nextY / 26][nextX / 26] != 0)
+		// 	// {
+		// 	// 	printf("hhitt!!!!\n");
+		// 	// 	break ;
+		// 	// }
+		// }
+			// int wall = worldMap[nextY / 26][nextX / 26]
+			// printf("")
+		// draw_line(data, angle, ray_length_x, 0x00FF0000);
+		// draw_line(data, angle, ray_length_y, 0x00FF0000);
+		// draw_point(data, 189, 208);
+	// }
 }
