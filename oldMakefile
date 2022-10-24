@@ -1,0 +1,83 @@
+NAME =		Cube3D
+
+SRCS =		src/main.c \
+			src/cub3d
+INCLUDES =	-Ilibft -Iincludes -Imlx
+OBJS =		$(SRCS:.c=.o)
+LDFLAGS = 	-framework OpenGL -framework AppKit
+CFLAGS =	-Wall -Werror -Wextra
+LIBFT	=	libft/libft.a
+
+all: $(NAME)
+
+$(NAME): $(OBJS) $(LIBFT) libmlx.dylib
+	$(CC) $(INCLUDES) $(SRCS) $(LIBFT) $(LDFLAGS) mlx/libmlx.a -o $(NAME)
+
+.c.o:
+	$(CC) $(INCLUDES) -c $< -o $(<:.c=.o)
+
+$(LIBFT):
+	make -C libft
+
+libmlx.dylib:
+	make -C mlx
+
+clean:
+	rm -f $(OBJS)
+	make -C libft clean
+
+fclean:
+	rm -f $(OBJS) $(NAME)
+	make -C libft fclean
+	make -C mlx clean
+
+re: fclean all
+
+.PHONY: all clean fclean re mlx libft bonus FORCE
+
+
+# nextX = 303
+# nextX = 285
+# nextX = 267
+# nextX = 249
+# nextX = 231
+# nextX = 212
+# nextX = 194
+# nextX = 176
+# nextX = 303
+# nextX = 285
+# nextX = 267
+# nextX = 249
+# nextX = 231
+# nextX = 212
+# nextX = 194
+# nextX = 176
+
+
+# nextY = 337
+# nextY = 311
+# nextY = 285
+# nextY = 259
+# nextY = 233
+# nextY = 207
+# nextY = 181
+# nextY = 155
+
+nextX = 341
+nextY = 390
+nextX = 359
+nextY = 416
+nextX = 377
+nextY = 442
+nextX = 395
+nextY = 468
+nextX = 413
+nextY = 494
+nextX = 432
+nextY = 520
+nextX = 450
+nextY = 546
+nextX = 468
+nextY = 572
+nextX = 486
+nextY = 598

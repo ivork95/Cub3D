@@ -1,35 +1,40 @@
-NAME =		Cube3D
+GREEN 		= \033[38;5;2m
+NORMAL		= \033[38;5;255m
+RED			= \033[38;5;1m
+BLUE		= \033[38;5;4m
+SRCS		=  	src/main.c\
+				src/cub3d.c
+OBJS 		= $(SRCS:.c=.o)
+LIBFT_DIR	= libft
+LIBFT_LIB	= libft.a
+NAME		= Cub3D
+GCC			= gcc
+FLAGS		= -Wall -Wextra -Werror
+HEADER_FILE = cub3d.h
+MLX_DIR 	= mlx
+MLX_LIB 	= libmlx.a
+LINKS 		= -framework OpenGL -framework AppKit
 
-SRCS =		src/main.c
-INCLUDES =	-Ilibft -Iincludes -Imlx
-OBJS =		$(SRCS:.c=.o)
-LDFLAGS = 	-Lmlx -lmlx -framework OpenGL -framework AppKit
-CFLAGS =	-Wall -Werror -Wextra
-LIBFT	=	libft/libft.a
-
-all: $(NAME)
-
-$(NAME): $(OBJS) $(LIBFT) libmlx.dylib
-	$(CC) $(INCLUDES) $(SRCS) $(LIBFT) $(LDFLAGS) mlx/libmlx.a -o $(NAME)
-
-.c.o:
-	$(CC) $(INCLUDES) -c $< -o $(<:.c=.o)
-
-$(LIBFT):
-	make -C libft
-
-libmlx.dylib:
-	make -C mlx
-
+all:    $(NAME)
+$(NAME):	$(OBJS)
+	$(MAKE) -C $(MLX_DIR)
+	$(MAKE) -C $(LIBFT_DIR)
+	$(GCC) $(FLAGS) -o $(NAME) $(OBJS) $(LIBFT_DIR)/$(LIBFT_LIB) $(MLX_DIR)/$(MLX_LIB) $(LINKS)
+%.o: %.c $(HEADER_FILE)
+	@echo "$(GREEN)Compiling:$(NORMAL)"
+	$(GCC) $(FLAGS) -c $< -o $(<:.c=.o)
+	@echo "$(GREEN)Successfully compiled!$(NORMAL)"
 clean:
+	@echo "$(RED)Removing all object files...$(NORMAL)"
 	rm -f $(OBJS)
-	make -C libft clean
-
-fclean:
-	rm -f $(OBJS) $(NAME)
-	make -C libft fclean
-	make -C mlx clean
-
+	make -C $(MLX_DIR) clean
+	make -C $(LIBFT_DIR) clean
+	@echo "$(GREEN)Succesfully removed all object files!$(NORMAL)"
+fclean: clean
+	@echo "$(RED)Removing libraries and bitmap file...$(NORMAL)"
+	rm -f $(NAME)
+	make -C $(MLX_DIR) clean
+	make -C $(LIBFT_DIR) fclean
+	@echo "$(GREEN)Successfully removed libraries and bitmap file!$(NORMAL)"
 re: fclean all
-
-.PHONY: all clean fclean re mlx libft bonus FORCE
+.PHONY: clean fclean re
