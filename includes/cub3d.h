@@ -50,5 +50,7 @@ void		my_mlx_pixel_put(t_win *data, int x, int y, int color);
 void		draw_sky(t_settings *data);
 void		draw_ground(t_settings *data);
 void		draw_player(t_settings *data);
+double		get_ray_length_y(t_settings *data, double angle);
+double		get_ray_length_x(t_settings *data, double angle);
 
 #endif

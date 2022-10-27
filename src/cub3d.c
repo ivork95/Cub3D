@@ -4,6 +4,34 @@
 #include <math.h>
 #include "../includes/cub3d.h"
 
+int worldMap1[mapHeight][mapWidth]=
+{
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
+
 void	my_mlx_pixel_put(t_win *data, int x, int y, int color)
 {
 	char	*dst;
@@ -97,4 +125,100 @@ void draw_player(t_settings *data)
       	}
 	}
 	draw_line(data, data->angle, 50, 0x00ffff00);
+}
+
+double get_ray_length_y(t_settings *data, double angle)
+{
+	int	j;
+	double ray_length;
+	double rad;
+	int nextY;
+	int nextX;
+	int deltaY;
+	int deltaX;
+
+	j = 0;
+	while (j < mapHeight)
+	{
+		if (angle == 1.5 * PI || angle == 0.5 * PI)
+		{
+			ray_length = 100000000;
+			j++;
+			continue ; 
+		}
+		if (0.5 * PI < angle && angle < 1.5 * PI)
+		{
+			nextY = (((((int)data->posY / (screenHeight / mapHeight))) - 0.0001) - j) * (screenHeight / mapHeight);
+			rad = angle - PI;
+			nextX = data->posX - tan(rad) * abs((int)data->posY - nextY);
+			// if (j != 0)
+			// 	nextY += y_off;
+			// nextX = data->posX - (j * TAN + x_off);
+		}
+		else
+		{
+			nextY = ((int)data->posY / (screenHeight / mapHeight) + 1 + j) * (screenHeight / mapHeight);
+			rad = angle;
+			nextX = data->posX + tan(rad) * abs((int)data->posY - nextY);
+			// if (j != 0)
+			// 	nextY += y_off;
+			// nextX = data->posX + (j * TAN + x_off);
+		}
+		deltaX = abs((int)data->posX - nextX); 
+		deltaY = abs((int)data->posY - nextY);
+		ray_length = sqrt(deltaX * deltaX + deltaY * deltaY);
+		if (nextX >= 0 && nextX <= 624 && nextY >= 0 && nextY <= 624)
+		{
+			if (worldMap1[nextY / 26][nextX / 26] != 0)
+				break ;
+		}
+		ray_length = 1000000000;
+		j++;
+	}
+	return (ray_length);
+}
+
+double get_ray_length_x(t_settings *data, double angle)
+{
+	int	z;
+	double ray_length;
+	double rad;
+	int nextY;
+	int nextX;
+	int deltaY;
+	int deltaX;
+
+	z = 0;
+	while (z < mapWidth)
+	{
+		if (angle == 2 * PI || angle == 0)
+		{
+			z++;	
+			ray_length = 10000000;
+			continue ;
+		}
+		if (angle > PI)
+		{
+			nextX = (((((int)data->posX / (screenHeight / mapHeight)) - z) - 0.0001)) * (screenHeight / mapHeight);
+			rad = 2 * PI - angle;
+			nextY = data->posY + abs((int)data->posX - nextX) / tan(rad);
+		}
+		else
+		{
+			nextX = ((int)data->posX / (screenHeight / mapHeight) + z + 1) * (screenHeight / mapHeight);
+			rad = angle;
+			nextY = data->posY + abs((int)data->posX - nextX) / tan(rad);
+		}
+		deltaX = abs((int)data->posX - nextX); 
+		deltaY = abs((int)data->posY - nextY);
+		ray_length = sqrt(deltaX * deltaX + deltaY * deltaY);
+		if (nextX > 0 && nextX < 624 && nextY > 0 && nextY < 624)
+		{
+			if (worldMap1[nextY / 26][nextX / 26] != 0)
+				break ;
+		}
+		ray_length = 10000000;
+		z++;
+	}
+	return (ray_length);
 }
