@@ -1,6 +1,7 @@
 #ifndef CUBED_H
 # define CUBED_H
-# include "../mlx/mlx.h"
+// # include "../mlx/mlx.h"
+#include "../MLX42/include/MLX42/MLX42.h"
 
 #define mapWidth 24
 #define mapHeight 24
@@ -34,22 +35,27 @@ typedef struct	s_settings {
 	double	deltaX;
 	double	deltaY;
 	double	angle;
-	double	planeX;
-	double	planeY;
-	void	*mlx;
+	double	hitX;
+	double	hitY;
+	double  distance;
+	mlx_t	*mlx;
 	void	*win;
-	t_win	img;
+	mlx_image_t	*img;
 	int		**map;
 }				t_settings;
 
 
 t_settings	*init_window(void);
 void		create_top_view(t_settings *data);
-void		init_player(t_settings *data);
-void		my_mlx_pixel_put(t_win *data, int x, int y, int color);
+void		init_player_settings(t_settings *data);
+// void		my_mlx_pixel_put(t_win *data, int x, int y, int color);
 void		draw_sky(t_settings *data);
 void		draw_ground(t_settings *data);
 void		draw_player(t_settings *data);
+void		render_screen(t_settings *data, int x, int color, double angle);
+void		shoot_rays(t_settings *data);
+void		key_press(void *param);
+int			plot_frame(t_settings *data);
 double		get_ray_length_y(t_settings *data, double angle);
 double		get_ray_length_x(t_settings *data, double angle);
 

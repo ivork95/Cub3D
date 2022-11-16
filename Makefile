@@ -3,17 +3,20 @@ NORMAL		= \033[38;5;255m
 RED			= \033[38;5;1m
 BLUE		= \033[38;5;4m
 SRCS		=  	src/main.c\
-				src/cub3d.c
+				src/top_view.c\
+				src/rays.c\
+				src/key_hook.c\
+				src/render.c
 OBJS 		= $(SRCS:.c=.o)
 LIBFT_DIR	= libft
 LIBFT_LIB	= libft.a
 NAME		= Cub3D
 GCC			= gcc
-FLAGS		= -Wall -Wextra -Werror
+FLAGS		= -Wall -Wextra -Werror -fsanitize=address -g
 HEADER_FILE = cub3d.h
-MLX_DIR 	= mlx
-MLX_LIB 	= libmlx.a
-LINKS 		= -framework OpenGL -framework AppKit
+MLX_DIR 	= MLX42
+MLX_LIB 	= libmlx42.a
+LINKS 		= -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit
 
 all:    $(NAME)
 $(NAME):	$(OBJS)
