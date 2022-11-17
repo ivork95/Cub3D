@@ -73,6 +73,12 @@ t_settings	*init_data(void)
 
 	data = init_window();
 	init_player_settings(data);
+	data->texture = mlx_load_png("./Checkerboard_pattern.png");
+	if (!data->texture)
+	{
+		printf("failed to load texture\n");
+		exit(1);
+	}
 	// data->map = malloc(sizeof(int) * mapHeight * mapWidth);
 	// data->map = worldMap;
 	return (data);
@@ -84,7 +90,7 @@ int	main(void)
 
 	data = init_data();
 	plot_frame(data);
-	mlx_key_hook(data->mlx, &key_press, data);
+	mlx_key_hook(data->mlx, &my_keyhook, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
 	// mlx_loop(data->mlx);

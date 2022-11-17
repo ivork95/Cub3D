@@ -41,6 +41,7 @@ typedef struct	s_settings {
 	mlx_t	*mlx;
 	void	*win;
 	mlx_image_t	*img;
+	mlx_texture_t* texture;
 	int		**map;
 }				t_settings;
 
@@ -55,6 +56,7 @@ void		draw_player(t_settings *data);
 void		render_screen(t_settings *data, int x, int color, double angle);
 void		shoot_rays(t_settings *data);
 void		key_press(void *param);
+void 		my_keyhook(mlx_key_data_t keydata, void* param);
 int			plot_frame(t_settings *data);
 double		get_ray_length_y(t_settings *data, double angle);
 double		get_ray_length_x(t_settings *data, double angle);
