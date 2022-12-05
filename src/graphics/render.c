@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 01:11:02 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/01 17:02:03 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/04 21:06:12 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ static void	draw_wall(t_data *data, double ray_length, int x, double angle)
 		data->textures->texture = data->textures->texture_N;
     if (data->settings->hitX == -1)
     {
-        tx = (double)(fmod(data->settings->hitY, ((double)screenHeight / (double)data->mapHeigth))) / (screenHeight / data->mapHeigth) * (data->textures->texture->width);
+        tx = (double)(fmod(data->settings->hitY, ((double)screenHeight / (double)data->mapHeigth))) / ((double)screenHeight / (double)data->mapHeigth) * (data->textures->texture->width);
 		if (angle > PI && angle < 2 * PI)
 			tx = (data->textures->texture->width) - tx;
     }
     else
 	{
-        tx = (float)(fmod(data->settings->hitX, (screenHeight / data->mapHeigth))) / (screenHeight / data->mapHeigth) * (data->textures->texture->width);
+        tx = (float)(fmod(data->settings->hitX, ((double)screenHeight / (double)data->mapHeigth))) / ((double)screenHeight / (double)data->mapHeigth) * (data->textures->texture->width);
 		if (angle < 0.5 * PI || angle > 1.5 * PI)
 			tx = data->textures->texture->width - tx;
 	}
@@ -111,10 +111,10 @@ void render_screen(t_data *data, int x, double angle)
 {
     if (x == 0)
     {
-		create_top_view(data);
-		angle = 0;
-        // draw_sky(data);
-        // draw_ground(data);
+		// create_top_view(data);
+		// angle = 0;
+        draw_sky(data);
+        draw_ground(data);
     }
-    // draw_wall(data, data->settings->distance, x, angle);
+    draw_wall(data, data->settings->distance, x, angle);
 }
