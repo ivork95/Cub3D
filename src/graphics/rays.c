@@ -6,14 +6,13 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 00:45:01 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/01 17:30:55 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/04 20:56:53 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 #include <math.h>
 #include <stdio.h>
-
 
 double get_ray_length_y(t_data *data, double angle)
 {
@@ -28,6 +27,9 @@ double get_ray_length_y(t_data *data, double angle)
 
 	j = 0;
 	settings = data->settings;
+	// printf("#########################\n");
+	// printf("ratioX = %f\n", ((float)screenWidth / data->mapwidth));
+	// printf("ratioY = %f\n", ((float)screenHeight / data->mapHeigth));
 	while (j < data->mapHeigth)
 	{
 		ray_length = 100000000;
@@ -35,29 +37,34 @@ double get_ray_length_y(t_data *data, double angle)
 			break ;
 		if (0.5 * PI < angle && angle < 1.5 * PI)
 		{
-			nextY = ((((int)settings->posY / ((float)screenHeight / data->mapHeigth))) - j) * ((float)screenHeight / data->mapHeigth);
+			nextY = ((((int)(settings->posY / ((float)screenHeight / data->mapHeigth))) - j)) * ((float)screenHeight / data->mapHeigth);
 			rad = angle - PI;
 			nextX = settings->posX - tan(rad) * fabs(settings->posY - nextY);
 			nextY = ((nextY / ((float)screenHeight / data->mapHeigth)) - 0.0001) * ((float)screenHeight / data->mapHeigth);
 		}
 		else
 		{
-			nextY = ((int)settings->posY / ((float)screenHeight / data->mapHeigth) + 1 + j) * ((float)screenHeight / data->mapHeigth);
+			nextY = ((int)(settings->posY / ((float)screenHeight / data->mapHeigth) + 1 + j)) * ((float)screenHeight / data->mapHeigth);
 			rad = angle;
 			nextX = settings->posX + tan(rad) * fabs(settings->posY - nextY);
 		}
-		if (nextX < 0 || nextX > 624 || nextY < 0 || nextY > 624)
+		if (nextX < 0 || nextX > screenWidth|| nextY < 0 || nextY > screenHeight)
 			break ;
+		// printf("nY = %f\n", nextY);
+		// printf("nX = %f\n", nextX);
+		// int indexX = (nextY / ((float)screenHeight / (data->mapHeigth)));
+		// int indexY = (nextX / ((float)screenWidth / (data->mapwidth)));
+		// printf("index-Y = %d\n", indexX);
+		// printf("index-X = %d\n", indexY);
+		// printf("actual = %c\n", data->map[(int)(nextY / ((float)screenHeight / (data->mapHeigth)))][(int)(nextX / ((float)screenWidth / (data->mapwidth)))]);
+		// printf("expected = %c\n", data->map[18][13]);
+		// printf("---------------------\n");
 		deltaX = fabs(settings->posX - nextX); 
 		deltaY = fabs(settings->posY - nextY);
 		ray_length = sqrt(deltaX * deltaX + deltaY * deltaY);
         settings->hitX = nextX;
-	
-		// for (int y = 0; y < 24; y++)
-		// {
-		// 	printf("%s\n", data->map[y]);
-		// }
-		if (data->map[(int)(nextY / ((float)screenHeight / (data->mapHeigth)))][(int)(nextX / ((float)screenWidth / (data->mapwidth)))] != '0')
+		// if (data->map[indexY][indexX] != '0')
+		if (data->map[(int)(nextY / ((float)screenHeight / (data->mapHeigth)) + 0.000001)][(int)(nextX / ((float)screenWidth / (data->mapwidth)))] != '0')
 			break ;
 		ray_length = 1000000000;
 		j++;
@@ -78,7 +85,9 @@ double get_ray_length_x(t_data *data, double angle)
 
 	z = 0;
 	settings = data->settings;
-	// printf("ratio = %f\n", (screenWidth / data->mapwidth));
+	// printf("#########################\n");
+	// printf("ratioX = %f\n", ((float)screenWidth / data->mapwidth));
+	// printf("ratioY = %f\n", ((float)screenHeight / data->mapHeigth));
 	while (z < data->mapwidth)
 	{
 		ray_length = 10000000;
@@ -86,28 +95,34 @@ double get_ray_length_x(t_data *data, double angle)
 			break ;
 		if (angle > PI)
 		{
-			nextX = ((((int)settings->posX / ((float)screenWidth / data->mapwidth) - z))) * ((float)screenWidth / data->mapwidth);
+			nextX = ((((int)(settings->posX / ((float)screenWidth / data->mapwidth) - z)))) * ((float)screenWidth / data->mapwidth);
 			rad = 2 * PI - angle;
 			nextY = settings->posY + fabs(settings->posX - nextX) / tan(rad);
 			nextX = ((nextX / ((float)screenWidth / data->mapwidth)) - 0.0001) * ((float)screenWidth / data->mapwidth);
 		}
 		else
 		{
-			nextX = ((int)settings->posX / ((float)screenWidth / data->mapwidth) + z + 1) * ((float)screenWidth / data->mapwidth);
+			nextX = ((int)(settings->posX / ((float)screenWidth / data->mapwidth) + z + 1)) * ((float)screenWidth / data->mapwidth);
 			rad = angle;
 			nextY = settings->posY + fabs(settings->posX - nextX) / tan(rad);
 		}
-		if (nextX < 0 || nextX > 624 || nextY < 0 || nextY > 624)
+		if (nextX < 0 || nextX > screenWidth || nextY < 0 || nextY > screenHeight)
 			break ;
 		deltaX = fabs(settings->posX - nextX); 
 		deltaY = fabs(settings->posY - nextY);
 		ray_length = sqrt(deltaX * deltaX + deltaY * deltaY);
         settings->hitY = nextY;
-		if (nextX > 0 && nextX < 624 && nextY > 0 && nextY < 624)
+		// printf("nY = %f\n", nextY);
+		// printf("nX = %f\n", nextX);
+		// int indexX = (nextY / ((float)screenHeight / (data->mapHeigth)));
+		// int indexY = (nextX / ((float)screenWidth / (data->mapwidth)) + 0.001);
+		// printf("index-Y = %d\n", indexX);
+		// printf("index-X = %d\n", indexY);
+		// printf("actual = %c\n", data->map[(int)(nextY / ((float)screenHeight / (data->mapHeigth)))][(int)(nextX / ((float)screenWidth / (data->mapwidth)))]);
+		// printf("---------------------\n");
+		if (nextX > 0 && nextX < screenWidth && nextY > 0 && nextY < screenHeight)
 		{
-			// printf("Y = %i\n", (int)nextY / (screenHeight / data->mapHeigth));
-			// printf("X = %i\n", (int)nextX / (screenWidth / data->mapwidth));
-			if (data->map[(int)(nextY / ((float)screenHeight / (data->mapHeigth)))][(int)(nextX / ((float)screenWidth / (data->mapwidth)))] != '0')
+			if (data->map[(int)(nextY / ((float)screenHeight / (data->mapHeigth)))][(int)(nextX / ((float)screenWidth / (data->mapwidth)) + 0.000001)] != '0')
 				break ;
 		}
 		ray_length = 10000000;
@@ -135,13 +150,13 @@ void shoot_rays(t_data *data)
 	double	shortest;
 	double	angle;
 	int		i;
-
 	i = 0;
-
+	// while (i < 1)
 	while (i < screenWidth)
 	{
-		// angle = data->settings->angle + calc_angle(i);
-		angle = data->settings->angle + ((float)FOV / 2 - ((float)i / screenWidth * FOV)) * RAD;
+		angle = data->settings->angle + calc_angle(i);
+		// angle = data->settings->angle + ((float)FOV / 2 - ((float)i / screenWidth * FOV)) * RAD;
+		// angle = data->settings->angle;
 		if (angle > 2.0 * PI)
 			angle -= 2.0 * PI;
 		if (angle < 0)
@@ -151,18 +166,17 @@ void shoot_rays(t_data *data)
 		if (ray_length_x < ray_length_y)
 		{
 			shortest = ray_length_x;
-            data->settings->hitX = -1;
+			data->settings->hitX = -1;
 		}
 		else
 		{
 			shortest = ray_length_y;
-            data->settings->hitY = -1;
+			data->settings->hitY = -1;
 		}
-		// shortest = shortest * cos(fabs(angle - data->settings->angle));
+		shortest = shortest * cos(fabs(angle - data->settings->angle));
 		data->settings->distance = shortest;
-        render_screen(data, i, angle);
+		render_screen(data, i, angle);
 		i++;
-
-		draw_line(data, angle, shortest, 0xFFFFFFFF);
+		// draw_line(data, angle, shortest, 0xFFFFFFFF);
 	}
 }
