@@ -3,10 +3,10 @@
 
 
 
-      NO ./N.png
-      EA ./E.png
-      SO ./S.png
-      WE ./W.png
+      NO ./textures/N.png
+      EA ./textures/E.png
+      SO ./textures/S.png
+      WE ./textures/W.png
 
      F    8, 54, 6
      C    101, 133, 161
