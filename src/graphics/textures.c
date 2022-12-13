@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:18:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:17:36 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:30:47 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	build_wall(t_data *data, int x)
 		if (SCREENHEIGHT - i <= (SCREENHEIGHT + line_heigth) / 2)
 		{
 			j = 0;
-			while (j <= line_heigth)
+			while (j < line_heigth)
 			{
 				mlx_put_pixel(data->img, x, i + j,
 					get_rgba(textures->texture, textures->tx, textures->ty));

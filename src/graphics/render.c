@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 00:45:01 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:18:25 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:29:36 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	color_background(t_data *data)
 	x = 0;
 	while (x < SCREENHEIGHT)
 	{
-		y = SCREENHEIGHT;
+		y = SCREENHEIGHT - 1;
 		while (y > SCREENHEIGHT / 2)
 		{
 			mlx_put_pixel(data->img, x, y, rgb_to_argb(data->floor));
