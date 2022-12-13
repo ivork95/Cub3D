@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/08 16:10:59 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/01 15:48:48 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 16:19:02 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	push(t_stack **stack, int cr, int cc)
 	node = malloc(sizeof(*node));
 	if (!node)
 	{
-		perror("Error: malloc()");
+		perror("Error\nmalloc()");
 		exit(EXIT_FAILURE);
 	}
 	node->cr = cr;

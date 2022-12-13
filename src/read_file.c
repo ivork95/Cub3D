@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:07:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 15:54:49 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 16:17:22 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_map_element	*tokenizer(const char *map_name)
 	file_to_str(map_fd, &file_str);
 	split_a = ft_split(file_str, '\n');
 	if (!split_a)
-		put_exit_fail("Error: ft_split()\n");
+		put_exit_fail("Error\nft_split()\n");
 	i = 0;
 	map_elements = 0;
 	while (split_a[i])
@@ -75,22 +75,22 @@ valid map (kleinste paths + kleinste map)
 void	validate_tokens(t_map_element *map_element)
 {
 	if (!has_four_cardinals(map_element))
-		put_exit_fail("Error: not 4 cardinals\n");
+		put_exit_fail("Error\nnot 4 cardinals\n");
 	if (!has_two_fcs(map_element))
-		put_exit_fail("Error: not 2 floor ceilings\n");
+		put_exit_fail("Error\nnot 2 floor ceilings\n");
 	if (!has_three_map_elements_min(map_element))
-		put_exit_fail("Error: less than 3 map elements\n");
+		put_exit_fail("Error\nless than 3 map elements\n");
 	if (!is_sorted(map_element))
-		put_exit_fail("Error: elements not sorted correctly\n");
+		put_exit_fail("Error\nelements not sorted correctly\n");
 	if (!has_four_unique_cardinals(map_element))
-		put_exit_fail("Error: not 4 unique cardinals or valid cardinals\n");
+		put_exit_fail("Error\nnot 4 unique cardinals or valid cardinals\n");
 	if (!has_two_unique_fcs(map_element))
-		put_exit_fail("Error: not 2 unique floor ceilings \
+		put_exit_fail("Error\nnot 2 unique floor ceilings \
 			or valid floor ceilings\n");
 	if (has_invalid_chars(map_element))
-		put_exit_fail("Error: map contains invalid chars\n");
+		put_exit_fail("Error\nmap contains invalid chars\n");
 	if (!has_single_start_position(map_element))
-		put_exit_fail("Error: not 1 start position\n");
+		put_exit_fail("Error\nnot 1 start position\n");
 }
 
 t_cub	*parser(t_map_element *map_element)
@@ -100,7 +100,7 @@ t_cub	*parser(t_map_element *map_element)
 
 	cub = malloc(sizeof(*cub));
 	if (!cub)
-		put_exit_fail("Error: malloc()");
+		put_exit_fail("Error\nmalloc()");
 	cub->rows = get_map_size(map_element);
 	cub->cols = get_map_col_size(map_element);
 	cub->map = ll_to_a_map(map_element);
@@ -109,7 +109,7 @@ t_cub	*parser(t_map_element *map_element)
 	cub->orientation = cub->map[cub->start_pos[0]][cub->start_pos[1]];
 	cub->map[cub->start_pos[0]][cub->start_pos[1]] = '0';
 	if (!itter_floodfill(map_dup, cub->start_pos, cub->rows, cub->cols))
-		put_exit_fail("Error: map is not closed\n");
+		put_exit_fail("Error\nmap is not closed\n");
 	free_splitted_array(map_dup);
 	cub->floor = parse_floor_ceiling(map_element, SUB_FLOOR);
 	cub->ceiling = parse_floor_ceiling(map_element, SUB_CEILING);
@@ -126,10 +126,10 @@ t_cub	*read_file(char *file_name)
 	t_cub			*cub;
 
 	if (!is_dot_cub_file(file_name))
-		put_exit_fail("Error: invalid file extension\n");
+		put_exit_fail("Error\ninvalid file extension\n");
 	map_element = tokenizer(file_name);
 	if (!map_element)
-		put_exit_fail("Error: no map_elements\n");
+		put_exit_fail("Error\nno map_elements\n");
 	validate_tokens(map_element);
 	cub = parser(map_element);
 	free_map_elements(map_element);
