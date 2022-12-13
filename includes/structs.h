@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 12:07:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/13 02:55:31 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 14:18:51 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_cub
 	int		cols;
 	char	**map;
 	int		start_pos[2];
+	char	orientation;
 	char	**no_path;
 	char	**so_path;
 	char	**we_path;
@@ -85,6 +86,7 @@ typedef struct s_player{
 	double	plane_x;
 	double	plane_y;
 	double	camera_x;
+	char	orientation;
 	// double  moveSpeed;
 	// double  rotSpeed;
 }				t_player;
