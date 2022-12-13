@@ -6,11 +6,22 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 11:56:56 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/01 12:25:11 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 15:53:30 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/tokenize.h"
+
+bool	is_directory(const char *map_name)
+{
+	int	map_fd;
+
+	map_fd = open(map_name, O_DIRECTORY);
+	if (map_fd == -1)
+		return (false);
+	close(map_fd);
+	return (true);
+}
 
 int	get_map_fd(const char *map_name)
 {

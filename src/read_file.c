@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:07:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 14:32:27 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 15:54:49 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ t_map_element	*tokenizer(const char *map_name)
 	int				i;
 	t_map_element	*map_elements;
 
+	if (is_directory(map_name))
+		put_exit_fail("Error\nArg is directory\n");
 	map_fd = get_map_fd(map_name);
 	file_to_str(map_fd, &file_str);
 	split_a = ft_split(file_str, '\n');
