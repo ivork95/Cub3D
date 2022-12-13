@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   first.c                                            :+:    :+:            */
+/*   read_file.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:07:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 00:07:59 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 14:15:48 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ t_cub	*parser(t_map_element *map_element)
 	cub->map = ll_to_a_map(map_element);
 	map_dup = ll_to_a_map(map_element);
 	get_start_pos(cub->map, cub->start_pos);
+	cub->orientation = cub->map[cub->start_pos[0]][cub->start_pos[1]];
 	cub->map[cub->start_pos[0]][cub->start_pos[1]] = '0';
 	if (!itter_floodfill(map_dup, cub->start_pos, cub->rows, cub->cols))
 		put_exit_fail("Error: map is not closed\n");
@@ -117,7 +118,15 @@ t_cub	*parser(t_map_element *map_element)
 	return (cub);
 }
 
-t_cub	*first(char *file_name)
+void print_map(t_cub *cub)
+{
+	for (int x = 0; x < cub->rows; x++)
+		printf("%s\n", cub->map[x]);
+	printf("======================\n");
+	
+}
+
+t_cub	*read_file(char *file_name)
 {
 	t_map_element	*map_element;
 	t_cub			*cub;

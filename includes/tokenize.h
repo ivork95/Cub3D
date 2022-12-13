@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 12:00:46 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/01 13:58:54 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 14:08:44 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ int		file_to_str(int fd, char **file_str);
 void	inner_tokenizer(char *split_a_i, t_map_element **map_elements);
 
 /* first*/
-t_cub	*first(char *file_name);
+t_cub	*read_file(char *file_name);
 
 #endif /* tokenize.h */

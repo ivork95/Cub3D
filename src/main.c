@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:08:19 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:18:25 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 14:08:44 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char *argv[argc + 1])
 
 	if (argc != 2)
 		put_exit_fail("Error: Invalid amount of arguments\n");
-	cub = first(argv[argc - 1]);
+	cub = read_file(argv[argc - 1]);
 	data = init_data(cub);
 	mlx_loop_hook(data->mlx, &key_press, data);
 	mlx_loop(data->mlx);

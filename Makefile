@@ -28,7 +28,7 @@ OBJECTS :=	obj/ft_strtol_utils.o \
 			obj/validate_non_map_elements.o \
 			obj/render.o \
 			obj/key_hook.o \
-			obj/first.o \
+			obj/read_file.o \
 			obj/init_cub.o \
 			obj/textures.o
 LDFLAGS ?=
