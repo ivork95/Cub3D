@@ -6,87 +6,93 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 00:55:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/01 12:31:47 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:13:24 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#include "../../libft/libft.h"
 #include <math.h>
 
-
-int	collide(t_data *data, int key_code)
+static void	rotate_player(t_player *player, mlx_t *mlx)
 {
-	double	x;
-	double	y;
-	double	angle;
+	double	old_dir_x;
+	double	old_plane_x;
 
-	if (key_code == MLX_KEY_S)
-		angle = data->settings->angle + PI;
-	if (key_code == MLX_KEY_W)
-		angle = data->settings->angle;
-	if (key_code == MLX_KEY_A)
-		angle = data->settings->angle + 0.5 * PI;
-	if (key_code == MLX_KEY_D)
-		angle = data->settings->angle - 0.5 * PI;
-	if (angle > 2 * PI)
-		angle -= 2 * PI;
-	if (angle < 0)
-		angle += 2 * PI;
-	x = get_ray_length_x(data, angle);
-	y = get_ray_length_y(data, angle);
-	if (x < 5 || y < 5)
-		return (1);
-	return (0);
+	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
+	{
+		old_dir_x = player->dirX;
+		player->dirX = player->dirX * cos(0.1) - player->dirY * sin(0.1);
+		player->dirY = old_dir_x * sin(0.1) + player->dirY * cos(0.1);
+		old_plane_x = player->planeX;
+		player->planeX = player->planeX * cos(0.1) - player->planeY * sin(0.1);
+		player->planeY = old_plane_x * sin(0.1) + player->planeY * cos(0.1);
+	}
+	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
+	{
+		old_dir_x = player->dirX;
+		player->dirX = player->dirX * cos(-0.1) - player->dirY * sin(-0.1);
+		player->dirY = old_dir_x * sin(-0.1) + player->dirY * cos(-0.1);
+		old_plane_x = player->planeX;
+		player->planeX = player->planeX * cos(-0.1)
+			- player->planeY * sin(-0.1);
+		player->planeY = old_plane_x * sin(-0.1) + player->planeY * cos(-0.1);
+	}
+}
+
+static void	move_up_down(t_player *player, mlx_t *mlx, char **map)
+{
+	if (mlx_is_key_down(mlx, MLX_KEY_W))
+	{
+		if (map[(int)player->posY][(int)(player->posX + player->dirX * 0.1)]
+			== '0')
+			player->posX += player->dirX * 0.1;
+		if (map[(int)(player->posY + player->dirY * 0.1)][(int)player->posX]
+			== '0')
+			player->posY += player->dirY * 0.1;
+	}
+	if (mlx_is_key_down(mlx, MLX_KEY_S))
+	{
+		if (map[(int)player->posY][(int)(player->posX - player->dirX * 0.1)]
+			== '0')
+			player->posX -= player->dirX * 0.1;
+		if (map[(int)(player->posY - player->dirY * 0.1)][(int)player->posX]
+			== '0')
+			player->posY -= player->dirY * 0.1;
+	}
+}
+
+void	move_left_right(t_player *player, mlx_t *mlx, char **map)
+{
+	if (mlx_is_key_down(mlx, MLX_KEY_A))
+	{
+		if (map[(int)player->posY][(int)(player->posX - player->dirX * 0.1)]
+			== '0')
+			player->posX -= player->dirX * 0.1;
+		if (map[(int)(player->posY + player->dirY * 0.1)][(int)player->posX]
+			== '0')
+			player->posY += player->dirY * 0.1;
+	}
+	if (mlx_is_key_down(mlx, MLX_KEY_D))
+	{
+		if (map[(int)player->posY][(int)(player->posX + player->dirX * 0.1)]
+			== '0')
+			player->posX += player->dirX * 0.1;
+		if (map[(int)(player->posY - player->dirY * 0.1)][(int)player->posX]
+			== '0')
+			player->posY -= player->dirY * 0.1;
+	}
 }
 
 void	key_press(void *param)
 {
 	t_data	*data;
-	mlx_t		*mlx;
-	double		dt;
 
 	data = param;
-	mlx = data->mlx;
-	dt = mlx->delta_time * 30;
-	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-	{
-		data->settings->angle += 0.05;
-		if (data->settings->angle < 0)
-			data->settings->angle += 2 * PI;
-		if (data->settings->angle > 2 * PI)
-			data->settings->angle -= 2 * PI;
-		data->settings->deltaX = sin(data->settings->angle) * 5;
-		data->settings->deltaY = cos(data->settings->angle) * 5;
-	}
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-	{
-		data->settings->angle -= 0.05;
-		if (data->settings->angle < 0)
-			data->settings->angle += 2 * PI;
-		if (data->settings->angle > 2 * PI)
-			data->settings->angle -= 2 * PI;
-		data->settings->deltaX = sin(data->settings->angle) * 5;
-		data->settings->deltaY = cos(data->settings->angle) * 5;
-	}
-	if (mlx_is_key_down(mlx, MLX_KEY_W) &&  !collide(data, MLX_KEY_W))
-	{
-		data->settings->posY += data->settings->deltaY * dt;
-		data->settings->posX += data->settings->deltaX * dt;
-	}
-	if (mlx_is_key_down(mlx, MLX_KEY_S)  &&  !collide(data, MLX_KEY_S))
-	{
-		data->settings->posY -= data->settings->deltaY * dt;
-		data->settings->posX -= data->settings->deltaX * dt;
-	}
-	if (mlx_is_key_down(mlx, MLX_KEY_A) &&  !collide(data, MLX_KEY_A))
-	{
-		data->settings->posY += cos(data->settings->angle + 0.5 * PI) * 5 * dt;
-		data->settings->posX += sin(data->settings->angle + 0.5 * PI) * 5 * dt;
-	}
-	if (mlx_is_key_down(mlx, MLX_KEY_D)  &&  !collide(data, MLX_KEY_D))
-	{
-		data->settings->posY += cos(data->settings->angle - 0.5 * PI) * 5 * dt;
-		data->settings->posX += sin(data->settings->angle - 0.5 * PI) * 5 * dt;
-	}
+	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+		exit(EXIT_SUCCESS);
+	rotate_player(data->player, data->mlx);
+	move_up_down(data->player, data->mlx, data->map);
+	move_left_right(data->player, data->mlx, data->map);
 	create_image(data);
 }

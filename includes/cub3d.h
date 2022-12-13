@@ -1,26 +1,44 @@
-#ifndef CUBED_H
-# define CUBED_H
-// # include "../mlx/mlx.h"
-#include "../MLX42/include/MLX42/MLX42.h"
-#include "structs.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   cub3d.h                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ivork <ivork@student.codam.nl>               +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/12/13 02:14:25 by ivork         #+#    #+#                 */
+/*   Updated: 2022/12/13 02:18:25 by ivork         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
 
+#ifndef CUB3D_H
+# define CUB3D_H
 
+/* MLX42 */
+# include "../MLX42/include/MLX42/MLX42.h"
 
+/* Private libraries */
+# include "structs.h"
 
+# define SCREENWIDTH 624
+# define SCREENHEIGHT 624
+# define PI 3.141592653
+# define FOV 70
+# define RAD 0.0174532925
 
-t_data	*init_window(void);
-void		create_top_view(t_data *data);
-void		init_player_settings(t_data *data, t_cub *cub);
-void		draw_sky(t_data *data);
-void		draw_ground(t_data *data);
-void		draw_player(t_data *data);
-void		draw_line(t_data *data, double angle, double line_lenght, long color);
-void		render_screen(t_data *data, int x, double angle);
-void		shoot_rays(t_data *data);
-void		key_press(void *param);
-void 		my_keyhook(mlx_key_data_t keydata, void* param);
-int			create_image(t_data *data);
-double		get_ray_length_y(t_data *data, double angle);
-double		get_ray_length_x(t_data *data, double angle);
+/* main.c */
+int		create_image(t_data *data);
+
+/* init_cub.c */
+t_data	*init_data(t_cub *cub);
+
+/* render.c */
+void	color_background(t_data *data);
+void	shoot_rays(t_data *data);
+
+/* key_hook.c */
+void	key_press(void *param);
+
+/* textures.c */
+void	build_wall(t_data *data, int x);
 
 #endif

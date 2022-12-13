@@ -5,116 +5,128 @@
 /*                                                     +:+                    */
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/12 01:11:02 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/04 21:06:12 by ivork         ########   odam.nl         */
+/*   Created: 2022/11/12 00:45:01 by ivork         #+#    #+#                 */
+/*   Updated: 2022/12/13 02:18:25 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 #include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
 
-
-
-void draw_sky(t_data *data)
+static int	rgb_to_argb(t_rgb color)
 {
-	for(int x = 0; x < screenHeight; x += 1)
-	{
-		for (int y = 0; y < screenWidth / 2; y++)
-				mlx_put_pixel(data->img, x, y, 0x0000FFFF);
-	}
-}
-
-void draw_ground(t_data *data)
-{
-	for(int x = 0; x < screenHeight; x += 1)
-	{
-		for (int y = 0; y < screenWidth / 2; y++)
-				mlx_put_pixel(data->img, x, screenWidth - y, 0x00A0522D);
-	}
-}
-
-static int	get_rgba(mlx_texture_t* texture, int x, int y)
-{
-	int	r;
-	int	g;
-	int	b;
 	int	a;
 
-	r = texture->pixels[y * texture->width * 4 + (x * 4)];
-	g = texture->pixels[y * texture->width * 4 + (x * 4) + 1];
-	b = texture->pixels[y * texture->width * 4 + (x * 4) + 2];
-	a = texture->pixels[y * texture->width * 4 + (x * 4) + 3];
-    return (r << 24 | g << 16 | b << 8 | a);
+	a = 255;
+	return (color.r << 24 | color.g << 16 | color.b << 8 | a);
 }
 
-static void	draw_wall(t_data *data, double ray_length, int x, double angle)
+void	color_background(t_data *data)
 {
-	double	line_heigth;
-	double	ty;
-	double	tx;
-	double	texture_step_y;
-	double	ty_off;
-	int		i;
-	int		j;
+	int	x;
+	int	y;
 
-	line_heigth = (screenHeight / data->mapHeigth * screenHeight) / ray_length;
-	if (data->settings->hitX == -1 && angle > PI && angle < 2 * PI)
-		data->textures->texture = data->textures->texture_W;
-	else if (data->settings->hitX == -1)
-		data->textures->texture = data->textures->texture_E;
-	else if (data->settings->hitY == -1 && (angle < 0.5 * PI || angle > 1.5 * PI))
-		data->textures->texture = data->textures->texture_S;
-	else
-		data->textures->texture = data->textures->texture_N;
-    if (data->settings->hitX == -1)
-    {
-        tx = (double)(fmod(data->settings->hitY, ((double)screenHeight / (double)data->mapHeigth))) / ((double)screenHeight / (double)data->mapHeigth) * (data->textures->texture->width);
-		if (angle > PI && angle < 2 * PI)
-			tx = (data->textures->texture->width) - tx;
-    }
-    else
+	x = 0;
+	while (x < SCREENHEIGHT)
 	{
-        tx = (float)(fmod(data->settings->hitX, ((double)screenHeight / (double)data->mapHeigth))) / ((double)screenHeight / (double)data->mapHeigth) * (data->textures->texture->width);
-		if (angle < 0.5 * PI || angle > 1.5 * PI)
-			tx = data->textures->texture->width - tx;
-	}
-	texture_step_y = data->textures->texture->height/(float)line_heigth;
-	ty_off = 0;
-	if (line_heigth > screenHeight)
-	{
-		ty_off = (line_heigth - screenHeight) / 2.0;
-		line_heigth = screenHeight;
-	}
-	ty = (ty_off * texture_step_y);
-	i = 0;
-	while (i < screenHeight)
-	{
-		if (screenHeight - i <=  (screenHeight + line_heigth) / 2)
+		y = 0;
+		while (y < SCREENHEIGHT / 2)
 		{
-			j = 0;
-			while (j <= line_heigth)
-			{
-				mlx_put_pixel(data->img, x,  i + j, get_rgba(data->textures->texture, tx, ty));
-				ty += texture_step_y;
-				j++;
-			}
-			i = screenHeight;
-			break ;
+			mlx_put_pixel(data->img, x, y, rgb_to_argb(data->ceiling));
+			y++;
 		}
-		i++;
+		x++;
+	}
+	x = 0;
+	while (x < SCREENHEIGHT)
+	{
+		y = SCREENHEIGHT;
+		while (y > SCREENHEIGHT / 2)
+		{
+			mlx_put_pixel(data->img, x, y, rgb_to_argb(data->floor));
+			y--;
+		}
+		x++;
 	}
 }
 
-void render_screen(t_data *data, int x, double angle)
+static void	ray_direction(t_player *player, t_ray *ray)
 {
-    if (x == 0)
-    {
-		// create_top_view(data);
-		// angle = 0;
-        draw_sky(data);
-        draw_ground(data);
-    }
-    draw_wall(data, data->settings->distance, x, angle);
+	if (ray->dirX != 0)
+		ray->deltaX = fabs(1 / ray->dirX);
+	if (ray->dirY != 0)
+		ray->deltaY = fabs(1 / ray->dirY);
+	if (ray->dirX < 0)
+	{
+		ray->stepX = -1;
+		ray->nextX = (player->posX - ray->mapX) * ray->deltaX;
+	}
+	else
+	{
+		ray->stepX = 1;
+		ray->nextX = (ray->mapX + 1.0 - player->posX) * ray->deltaX;
+	}
+	if (ray->dirY < 0)
+	{
+		ray->stepY = -1;
+		ray->nextY = (player->posY - ray->mapY) * ray->deltaY;
+	}
+	else
+	{
+		ray->stepY = 1;
+		ray->nextY = (ray->mapY + 1.0 - player->posY) * ray->deltaY;
+	}
+}
+
+static void	dda(char **map, t_ray *ray)
+{
+	int	hit;
+
+	hit = 0;
+	while (hit == 0)
+	{
+		if (ray->nextX < ray->nextY)
+		{
+			ray->nextX += ray->deltaX;
+			ray->mapX += ray->stepX;
+			ray->side = 0;
+		}
+		else
+		{
+			ray->nextY += ray->deltaY;
+			ray->mapY += ray->stepY;
+			ray->side = 1;
+		}
+		if (map[ray->mapY][ray->mapX] != '0')
+			hit = 1;
+	}
+}
+
+void	shoot_rays(t_data *data)
+{
+	t_player	*player;
+	t_ray		*ray;
+	int			x;
+
+	player = data->player;
+	ray = data->ray;
+	x = 0;
+	while (x < SCREENWIDTH)
+	{
+		player->cameraX = 2 * x / (double)SCREENWIDTH - 1;
+		ray->dirX = player->dirX + player->planeX * player->cameraX;
+		ray->dirY = player->dirY + player->planeY * player->cameraX;
+		ray->mapX = (int)player->posX;
+		ray->mapY = (int)player->posY;
+		ray->deltaX = 1e30;
+		ray->deltaY = 1e30;
+		ray_direction(player, ray);
+		dda(data->map, ray);
+		if (ray->side == 0)
+			ray->distance = (ray->nextX - ray->deltaX);
+		else
+			ray->distance = (ray->nextY - ray->deltaY);
+		build_wall(data, x);
+		x++;
+	}
 }

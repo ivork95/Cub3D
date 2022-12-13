@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 12:07:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/01 16:19:35 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:16:22 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,7 @@
 # include <stdbool.h>
 
 /* MLX42 */
-#include "../MLX42/include/MLX42/MLX42.h"
-
-#define screenWidth 624
-#define screenHeight 624
-#define PI 3.141592653
-#define FOV 70
-#define RAD 0.0174532925
+# include "../MLX42/include/MLX42/MLX42.h"
 
 /* parser */
 typedef struct s_stl_data
@@ -86,13 +80,30 @@ typedef struct s_cub
 typedef struct	s_player{
 	double	posX;
 	double	posY;
+	double	dirX;
+	double	dirY;
+	double	planeX;
+	double	planeY;
+	double	cameraX;
+	// double  moveSpeed;
+	// double  rotSpeed;
+}				t_player;
+
+typedef struct	s_ray
+{
+	double	dirX;
+	double	dirY;
 	double	deltaX;
 	double	deltaY;
-	double	angle;
-	double	hitX;
-	double	hitY;
+	double	nextX;
+	double	nextY;
+	double	stepX;
+	double	stepY;
 	double  distance;
-}				t_player;
+	int		mapX;
+	int		mapY;
+	int		side;
+}				t_ray;
 
 typedef struct		s_textures{
 	mlx_texture_t*	texture;
@@ -100,12 +111,16 @@ typedef struct		s_textures{
 	mlx_texture_t*	texture_S;
 	mlx_texture_t*	texture_W;
 	mlx_texture_t*	texture_E;
+	double			tx;
+	double			ty;
+	double			texture_step_y;
+	double			ty_offset;
 }					t_textures;
 
-
 typedef struct	s_data {
-	t_player	*settings;
+	t_player	*player;
 	t_textures	*textures;
+	t_ray		*ray;
 	mlx_t		*mlx;
 	void		*win;
 	mlx_image_t	*img;
@@ -113,7 +128,8 @@ typedef struct	s_data {
 	char		**map;
 	int			mapHeigth;
 	int			mapwidth;
+	t_rgb		floor;
+	t_rgb		ceiling;
 }				t_data;
-
 
 #endif
