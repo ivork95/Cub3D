@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:07:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 14:15:48 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 14:32:27 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,14 +116,6 @@ t_cub	*parser(t_map_element *map_element)
 	cub->we_path = parse_cordinal(map_element, SUB_WE);
 	cub->ea_path = parse_cordinal(map_element, SUB_EA);
 	return (cub);
-}
-
-void print_map(t_cub *cub)
-{
-	for (int x = 0; x < cub->rows; x++)
-		printf("%s\n", cub->map[x]);
-	printf("======================\n");
-	
 }
 
 t_cub	*read_file(char *file_name)

@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 00:45:01 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:52:28 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 14:33:23 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	shoot_rays(t_data *data)
 	while (x < SCREENWIDTH)
 	{
 		player->camera_x = 2 * x / (double)SCREENWIDTH - 1;
-		ray->dir_x = player->dir_x + player->plane_x* player->camera_x;
+		ray->dir_x = player->dir_x + player->plane_x * player->camera_x;
 		ray->dir_y = player->dir_y + player->plane_y * player->camera_x;
 		ray->map_x = (int)player->pos_x;
 		ray->map_y = (int)player->pos_y;
