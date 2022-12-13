@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 12:07:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/13 14:18:51 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 14:24:38 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ typedef struct s_player{
 	double	plane_y;
 	double	camera_x;
 	char	orientation;
-	// double  moveSpeed;
-	// double  rotSpeed;
+	double  move_speed;
+	double  rot_speed;
 }				t_player;
 
 typedef struct s_ray
