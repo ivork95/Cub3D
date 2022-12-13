@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 12:07:36 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/01 12:02:02 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:46:58 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	print_map_elements(t_map_element *head);
 void	print_splitted_a(char **split_a);
 void	put_exit_fail(char *msg);
 void	print_rgb(t_rgb *rgb);
-int		count_ptrs(char **splitted_array);  
+int		count_ptrs(char **splitted_array);
 void	print_cub(t_cub *cub);
 
 /* free_breezy.c */
