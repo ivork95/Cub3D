@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 00:55:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:54:07 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 14:05:18 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,23 +64,23 @@ static void	move_up_down(t_player *player, mlx_t *mlx, char **map)
 
 void	move_left_right(t_player *player, mlx_t *mlx, char **map)
 {
-	if (mlx_is_key_down(mlx, MLX_KEY_A))
-	{
-		if (map[(int)player->pos_y][(int)(player->pos_x - player->dir_x * 0.1)]
-			== '0')
-			player->pos_x -= player->dir_x * 0.1;
-		if (map[(int)(player->pos_y + player->dir_y * 0.1)][(int)player->pos_x]
-			== '0')
-			player->pos_y += player->dir_y * 0.1;
-	}
 	if (mlx_is_key_down(mlx, MLX_KEY_D))
+	{
+		if (map[(int)player->pos_y][(int)(player->pos_x + player->plane_x * 0.1)]
+			== '0')
+			player->pos_x += player->plane_x * 0.1;
+		if (map[(int)(player->pos_y + player->plane_y * 0.1)][(int)player->pos_x]
+			== '0')
+			player->pos_y += player->plane_y * 0.1;
+	}
+	if (mlx_is_key_down(mlx, MLX_KEY_A))
 	{
 		if (map[(int)player->pos_y][(int)(player->pos_x + player->dir_x * 0.1)]
 			== '0')
-			player->pos_x += player->dir_x * 0.1;
-		if (map[(int)(player->pos_y - player->dir_y * 0.1)][(int)player->pos_x]
+			player->pos_x -= player->plane_x * 0.1;
+		if (map[(int)(player->pos_y +  player->plane_y * 0.1)][(int)player->pos_x]
 			== '0')
-			player->pos_y -= player->dir_y * 0.1;
+			player->pos_y -= player->plane_y * 0.1;
 	}
 }
 
