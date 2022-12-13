@@ -5,7 +5,8 @@ VPATH :=	src:\
 			src/tokenize:\
 			src/utils:\
 			src/validate_tokens \
-			src/graphics
+			src/graphics \
+			src/init
 HEADERS :=	includes/ft_strtol.h \
 			includes/parse.h \
 			includes/tokenize.h \
@@ -25,11 +26,11 @@ OBJECTS :=	obj/ft_strtol_utils.o \
 			obj/floodfill.o \
 			obj/validate_map_elements.o \
 			obj/validate_non_map_elements.o \
-			obj/rays.o \
-			obj/key_hook.o \
 			obj/render.o \
+			obj/key_hook.o \
 			obj/first.o \
-			obj/top_view.o
+			obj/init_cub.o \
+			obj/textures.o
 LDFLAGS ?=
 CFLAGS ?=	-Wall -Wextra -g
 LIBFT :=	./libft
