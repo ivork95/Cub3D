@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 00:55:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 15:58:48 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 16:06:22 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ void	move_left_right(t_player *player, mlx_t *mlx, char **map)
 	if (mlx_is_key_down(mlx, MLX_KEY_A))
 	{
 		if (map[(int)player->pos_y]
-			[(int)(player->pos_x - player->plane_x * player->move_speed)] == '0')
+			[(int)(player->pos_x - player->plane_x * player->move_speed)]
+			== '0')
 			player->pos_x -= player->plane_x * player->move_speed;
 		if (map[(int)(player->pos_y + player->plane_y * player->move_speed)]
 			[(int)player->pos_x] == '0')
