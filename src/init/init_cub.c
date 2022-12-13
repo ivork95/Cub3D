@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:12:46 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 14:25:30 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 14:29:19 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static void	set_start_pos(t_data *data, t_cub *cub)
+static void	set_start_pos(t_data *data)
 {
 	data->player->plane_y = 0;
 	data->player->plane_x = 0;
 	data->player->dir_x = 0;
 	data->player->dir_y = 0;
-	if (cub->map[cub->start_pos[0]][cub->start_pos[1]] == 'N')
+	if (data->player->orientation == 'N')
 	{
 		data->player->dir_y = -1;
 		data->player->plane_x = -0.5;
 	}
-	else if (cub->map[cub->start_pos[0]][cub->start_pos[1]] == 'S')
+	else if (data->player->orientation == 'S')
 	{
 		data->player->dir_y = 1;
 		data->player->plane_x = 0.5;
 	}
-	else if (cub->map[cub->start_pos[0]][cub->start_pos[1]] == 'E')
+	else if (data->player->orientation == 'E')
 	{
 		data->player->dir_x = -1;
 		data->player->plane_y = 0.5;
@@ -55,7 +55,7 @@ static void	init_player_settings(t_data *data, t_cub *cub)
 	data->player->orientation = cub->orientation;
 	data->player->move_speed = 0.1;
 	data->player->rot_speed = 0.05;
-	set_start_pos(data, cub);
+	set_start_pos(data);
 }
 
 static t_data	*init_window(void)
