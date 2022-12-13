@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 00:45:01 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:29:36 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:52:28 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,29 @@ void	color_background(t_data *data)
 
 static void	ray_direction(t_player *player, t_ray *ray)
 {
-	if (ray->dirX != 0)
-		ray->deltaX = fabs(1 / ray->dirX);
-	if (ray->dirY != 0)
-		ray->deltaY = fabs(1 / ray->dirY);
-	if (ray->dirX < 0)
+	if (ray->dir_x != 0)
+		ray->delta_x = fabs(1 / ray->dir_x);
+	if (ray->dir_y != 0)
+		ray->delta_y = fabs(1 / ray->dir_y);
+	if (ray->dir_x < 0)
 	{
-		ray->stepX = -1;
-		ray->nextX = (player->posX - ray->mapX) * ray->deltaX;
+		ray->step_x = -1;
+		ray->next_x = (player->pos_x - ray->map_x) * ray->delta_x;
 	}
 	else
 	{
-		ray->stepX = 1;
-		ray->nextX = (ray->mapX + 1.0 - player->posX) * ray->deltaX;
+		ray->step_x = 1;
+		ray->next_x = (ray->map_x + 1.0 - player->pos_x) * ray->delta_x;
 	}
-	if (ray->dirY < 0)
+	if (ray->dir_y < 0)
 	{
-		ray->stepY = -1;
-		ray->nextY = (player->posY - ray->mapY) * ray->deltaY;
+		ray->step_y = -1;
+		ray->next_y = (player->pos_y - ray->map_y) * ray->delta_y;
 	}
 	else
 	{
-		ray->stepY = 1;
-		ray->nextY = (ray->mapY + 1.0 - player->posY) * ray->deltaY;
+		ray->step_y = 1;
+		ray->next_y = (ray->map_y + 1.0 - player->pos_y) * ray->delta_y;
 	}
 }
 
@@ -85,19 +85,19 @@ static void	dda(char **map, t_ray *ray)
 	hit = 0;
 	while (hit == 0)
 	{
-		if (ray->nextX < ray->nextY)
+		if (ray->next_x < ray->next_y)
 		{
-			ray->nextX += ray->deltaX;
-			ray->mapX += ray->stepX;
+			ray->next_x += ray->delta_x;
+			ray->map_x += ray->step_x;
 			ray->side = 0;
 		}
 		else
 		{
-			ray->nextY += ray->deltaY;
-			ray->mapY += ray->stepY;
+			ray->next_y += ray->delta_y;
+			ray->map_y += ray->step_y;
 			ray->side = 1;
 		}
-		if (map[ray->mapY][ray->mapX] != '0')
+		if (map[ray->map_y][ray->map_x] != '0')
 			hit = 1;
 	}
 }
@@ -113,19 +113,19 @@ void	shoot_rays(t_data *data)
 	x = 0;
 	while (x < SCREENWIDTH)
 	{
-		player->cameraX = 2 * x / (double)SCREENWIDTH - 1;
-		ray->dirX = player->dirX + player->planeX * player->cameraX;
-		ray->dirY = player->dirY + player->planeY * player->cameraX;
-		ray->mapX = (int)player->posX;
-		ray->mapY = (int)player->posY;
-		ray->deltaX = 1e30;
-		ray->deltaY = 1e30;
+		player->camera_x = 2 * x / (double)SCREENWIDTH - 1;
+		ray->dir_x = player->dir_x + player->plane_x* player->camera_x;
+		ray->dir_y = player->dir_y + player->plane_y * player->camera_x;
+		ray->map_x = (int)player->pos_x;
+		ray->map_y = (int)player->pos_y;
+		ray->delta_x = 1e30;
+		ray->delta_y = 1e30;
 		ray_direction(player, ray);
 		dda(data->map, ray);
 		if (ray->side == 0)
-			ray->distance = (ray->nextX - ray->deltaX);
+			ray->distance = (ray->next_x - ray->delta_x);
 		else
-			ray->distance = (ray->nextY - ray->deltaY);
+			ray->distance = (ray->next_y - ray->delta_y);
 		build_wall(data, x);
 		x++;
 	}

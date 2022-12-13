@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:18:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:41:33 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:55:24 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ static int	get_rgba(mlx_texture_t *texture, int x, int y)
 
 static void	set_textures_side(t_textures *textures, t_ray *ray)
 {	
-	if (ray->side == 0 && ray->dirX > 0)
-		textures->texture = textures->texture_W;
+	if (ray->side == 0 && ray->dir_x > 0)
+		textures->texture = textures->texture_west;
 	else if (ray->side == 0)
-		textures->texture = textures->texture_E;
-	else if (ray->side == 1 && ray->dirY < 0)
-		textures->texture = textures->texture_N;
+		textures->texture = textures->texture_east;
+	else if (ray->side == 1 && ray->dir_y < 0)
+		textures->texture = textures->texture_north;
 	else
-		textures->texture = textures->texture_S;
+		textures->texture = textures->texture_south;
 }
 
 static double	map_line_tex(t_data *data, t_textures *tex, t_ray *ray, int lh)
@@ -46,26 +46,26 @@ static double	map_line_tex(t_data *data, t_textures *tex, t_ray *ray, int lh)
 	lh = SCREENHEIGHT / ray->distance;
 	if (ray->side == 0)
 	{
-		tex->tx = data->player->posY + ray->distance * ray->dirY;
-		tex->tx = (tex->tx - floor((tex->tx))) * tex->texture->width;
-		if (ray->dirX > 0)
-			tex->tx = (tex->texture->width) - tex->tx;
+		tex->x = data->player->pos_y + ray->distance * ray->dir_y;
+		tex->x = (tex->x - floor((tex->x))) * tex->texture->width;
+		if (ray->dir_x > 0)
+			tex->x = (tex->texture->width) - tex->x;
 	}
 	else
 	{
-		tex->tx = data->player->posX + ray->distance * ray->dirX;
-		tex->tx = (tex->tx - floor((tex->tx))) * tex->texture->width;
-		if (ray->dirY < 0)
-			tex->tx = tex->texture->width - tex->tx;
+		tex->x = data->player->pos_x + ray->distance * ray->dir_x;
+		tex->x = (tex->x - floor((tex->x))) * tex->texture->width;
+		if (ray->dir_y < 0)
+			tex->x = tex->texture->width - tex->x;
 	}
-	tex->texture_step_y = tex->texture->height / (float)lh;
-	tex->ty_offset = 0;
+	tex->step_y = tex->texture->height / (float)lh;
+	tex->y_offset = 0;
 	if (lh > SCREENHEIGHT)
 	{
-		tex->ty_offset = (lh - SCREENHEIGHT) / 2.0;
+		tex->y_offset = (lh - SCREENHEIGHT) / 2.0;
 		lh = SCREENHEIGHT;
 	}
-	tex->ty = (tex->ty_offset * tex->texture_step_y);
+	tex->y = (tex->y_offset * tex->step_y);
 	return (lh);
 }
 
@@ -88,8 +88,8 @@ void	build_wall(t_data *data, int x)
 			while (j < line_heigth)
 			{
 				mlx_put_pixel(data->img, x, i + j,
-					get_rgba(textures->texture, textures->tx, textures->ty));
-				textures->ty += textures->texture_step_y;
+					get_rgba(textures->texture, textures->x, textures->y));
+				textures->y += textures->step_y;
 				j++;
 			}
 			i = SCREENHEIGHT;

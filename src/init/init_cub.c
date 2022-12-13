@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:12:46 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:18:25 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:56:48 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,29 @@
 
 static void	set_start_pos(t_data *data, t_cub *cub)
 {
-	data->player->planeY = 0;
-	data->player->planeX = 0;
-	data->player->dirX = 0;
-	data->player->dirY = 0;
+	data->player->plane_y = 0;
+	data->player->plane_x = 0;
+	data->player->dir_x = 0;
+	data->player->dir_y = 0;
 	if (cub->map[cub->start_pos[0]][cub->start_pos[1]] == 'N')
 	{
-		data->player->dirY = -1;
-		data->player->planeX = -0.5;
+		data->player->dir_y = -1;
+		data->player->plane_x = -0.5;
 	}
 	else if (cub->map[cub->start_pos[0]][cub->start_pos[1]] == 'S')
 	{
-		data->player->dirY = 1;
-		data->player->planeX = 0.5;
+		data->player->dir_y = 1;
+		data->player->plane_x = 0.5;
 	}
 	else if (cub->map[cub->start_pos[0]][cub->start_pos[1]] == 'E')
 	{
-		data->player->dirX = -1;
-		data->player->planeY = 0.5;
+		data->player->dir_x = -1;
+		data->player->plane_y = 0.5;
 	}
 	else
 	{
-		data->player->dirX = 1;
-		data->player->planeY = -0.5;
+		data->player->dir_x = 1;
+		data->player->plane_y = -0.5;
 	}
 }
 
@@ -50,8 +50,8 @@ static void	init_player_settings(t_data *data, t_cub *cub)
 		printf("maloc failure");
 		exit(1);
 	}
-	data->player->posX = cub->start_pos[1];
-	data->player->posY = cub->start_pos[0];
+	data->player->pos_x = cub->start_pos[1];
+	data->player->pos_y = cub->start_pos[0];
 	set_start_pos(data, cub);
 }
 
@@ -80,12 +80,12 @@ static void	init_textures(t_data *data, t_cub *cub)
 		printf("malloc failure\n");
 		exit(1);
 	}
-	data->textures->texture_N = mlx_load_png(cub->no_path[1]);
-	data->textures->texture_S = mlx_load_png(cub->so_path[1]);
-	data->textures->texture_W = mlx_load_png(cub->we_path[1]);
-	data->textures->texture_E = mlx_load_png(cub->ea_path[1]);
-	if (!data->textures->texture_N || !data->textures->texture_E
-		|| !data->textures->texture_W || !data->textures->texture_S)
+	data->textures->texture_north = mlx_load_png(cub->no_path[1]);
+	data->textures->texture_south = mlx_load_png(cub->so_path[1]);
+	data->textures->texture_west = mlx_load_png(cub->we_path[1]);
+	data->textures->texture_east = mlx_load_png(cub->ea_path[1]);
+	if (!data->textures->texture_north || !data->textures->texture_east
+		|| !data->textures->texture_west || !data->textures->texture_south)
 	{
 		printf("failed to load texture\n");
 		exit(1);
@@ -98,8 +98,8 @@ t_data	*init_data(t_cub *cub)
 
 	data = init_window();
 	data->map = cub->map;
-	data->mapHeigth = cub->rows;
-	data->mapwidth = cub->cols;
+	data->map_heigth = cub->rows;
+	data->map_width = cub->cols;
 	data->floor = cub->floor;
 	data->ceiling = cub->ceiling;
 	init_player_settings(data, cub);

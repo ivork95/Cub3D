@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 00:55:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:13:24 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:54:07 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,22 @@ static void	rotate_player(t_player *player, mlx_t *mlx)
 
 	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
 	{
-		old_dir_x = player->dirX;
-		player->dirX = player->dirX * cos(0.1) - player->dirY * sin(0.1);
-		player->dirY = old_dir_x * sin(0.1) + player->dirY * cos(0.1);
-		old_plane_x = player->planeX;
-		player->planeX = player->planeX * cos(0.1) - player->planeY * sin(0.1);
-		player->planeY = old_plane_x * sin(0.1) + player->planeY * cos(0.1);
+		old_dir_x = player->dir_x;
+		player->dir_x = player->dir_x * cos(0.1) - player->dir_y * sin(0.1);
+		player->dir_y = old_dir_x * sin(0.1) + player->dir_y * cos(0.1);
+		old_plane_x = player->plane_x;
+		player->plane_x = player->plane_x * cos(0.1) - player->plane_y * sin(0.1);
+		player->plane_y = old_plane_x * sin(0.1) + player->plane_y * cos(0.1);
 	}
 	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
 	{
-		old_dir_x = player->dirX;
-		player->dirX = player->dirX * cos(-0.1) - player->dirY * sin(-0.1);
-		player->dirY = old_dir_x * sin(-0.1) + player->dirY * cos(-0.1);
-		old_plane_x = player->planeX;
-		player->planeX = player->planeX * cos(-0.1)
-			- player->planeY * sin(-0.1);
-		player->planeY = old_plane_x * sin(-0.1) + player->planeY * cos(-0.1);
+		old_dir_x = player->dir_x;
+		player->dir_x = player->dir_x * cos(-0.1) - player->dir_y * sin(-0.1);
+		player->dir_y = old_dir_x * sin(-0.1) + player->dir_y * cos(-0.1);
+		old_plane_x = player->plane_x;
+		player->plane_x = player->plane_x * cos(-0.1)
+			- player->plane_y * sin(-0.1);
+		player->plane_y = old_plane_x * sin(-0.1) + player->plane_y * cos(-0.1);
 	}
 }
 
@@ -44,21 +44,21 @@ static void	move_up_down(t_player *player, mlx_t *mlx, char **map)
 {
 	if (mlx_is_key_down(mlx, MLX_KEY_W))
 	{
-		if (map[(int)player->posY][(int)(player->posX + player->dirX * 0.1)]
+		if (map[(int)player->pos_y][(int)(player->pos_x + player->dir_x * 0.1)]
 			== '0')
-			player->posX += player->dirX * 0.1;
-		if (map[(int)(player->posY + player->dirY * 0.1)][(int)player->posX]
+			player->pos_x += player->dir_x * 0.1;
+		if (map[(int)(player->pos_y + player->dir_y * 0.1)][(int)player->pos_x]
 			== '0')
-			player->posY += player->dirY * 0.1;
+			player->pos_y += player->dir_y * 0.1;
 	}
 	if (mlx_is_key_down(mlx, MLX_KEY_S))
 	{
-		if (map[(int)player->posY][(int)(player->posX - player->dirX * 0.1)]
+		if (map[(int)player->pos_y][(int)(player->pos_x - player->dir_x * 0.1)]
 			== '0')
-			player->posX -= player->dirX * 0.1;
-		if (map[(int)(player->posY - player->dirY * 0.1)][(int)player->posX]
+			player->pos_x -= player->dir_x * 0.1;
+		if (map[(int)(player->pos_y - player->dir_y * 0.1)][(int)player->pos_x]
 			== '0')
-			player->posY -= player->dirY * 0.1;
+			player->pos_y -= player->dir_y * 0.1;
 	}
 }
 
@@ -66,21 +66,21 @@ void	move_left_right(t_player *player, mlx_t *mlx, char **map)
 {
 	if (mlx_is_key_down(mlx, MLX_KEY_A))
 	{
-		if (map[(int)player->posY][(int)(player->posX - player->dirX * 0.1)]
+		if (map[(int)player->pos_y][(int)(player->pos_x - player->dir_x * 0.1)]
 			== '0')
-			player->posX -= player->dirX * 0.1;
-		if (map[(int)(player->posY + player->dirY * 0.1)][(int)player->posX]
+			player->pos_x -= player->dir_x * 0.1;
+		if (map[(int)(player->pos_y + player->dir_y * 0.1)][(int)player->pos_x]
 			== '0')
-			player->posY += player->dirY * 0.1;
+			player->pos_y += player->dir_y * 0.1;
 	}
 	if (mlx_is_key_down(mlx, MLX_KEY_D))
 	{
-		if (map[(int)player->posY][(int)(player->posX + player->dirX * 0.1)]
+		if (map[(int)player->pos_y][(int)(player->pos_x + player->dir_x * 0.1)]
 			== '0')
-			player->posX += player->dirX * 0.1;
-		if (map[(int)(player->posY - player->dirY * 0.1)][(int)player->posX]
+			player->pos_x += player->dir_x * 0.1;
+		if (map[(int)(player->pos_y - player->dir_y * 0.1)][(int)player->pos_x]
 			== '0')
-			player->posY -= player->dirY * 0.1;
+			player->pos_y -= player->dir_y * 0.1;
 	}
 }
 

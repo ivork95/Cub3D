@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 12:07:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/13 02:16:22 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:55:31 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,47 +77,47 @@ typedef struct s_cub
 
 /*graphics*/
 
-typedef struct	s_player{
-	double	posX;
-	double	posY;
-	double	dirX;
-	double	dirY;
-	double	planeX;
-	double	planeY;
-	double	cameraX;
+typedef struct s_player{
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+	double	camera_x;
 	// double  moveSpeed;
 	// double  rotSpeed;
 }				t_player;
 
-typedef struct	s_ray
+typedef struct s_ray
 {
-	double	dirX;
-	double	dirY;
-	double	deltaX;
-	double	deltaY;
-	double	nextX;
-	double	nextY;
-	double	stepX;
-	double	stepY;
-	double  distance;
-	int		mapX;
-	int		mapY;
+	double	dir_x;
+	double	dir_y;
+	double	delta_x;
+	double	delta_y;
+	double	next_x;
+	double	next_y;
+	double	step_x;
+	double	step_y;
+	double	distance;
+	int		map_x;
+	int		map_y;
 	int		side;
 }				t_ray;
 
-typedef struct		s_textures{
-	mlx_texture_t*	texture;
-	mlx_texture_t*	texture_N;
-	mlx_texture_t*	texture_S;
-	mlx_texture_t*	texture_W;
-	mlx_texture_t*	texture_E;
-	double			tx;
-	double			ty;
-	double			texture_step_y;
-	double			ty_offset;
+typedef struct s_textures{
+	mlx_texture_t	*texture;
+	mlx_texture_t	*texture_north;
+	mlx_texture_t	*texture_south;
+	mlx_texture_t	*texture_west;
+	mlx_texture_t	*texture_east;
+	double			x;
+	double			y;
+	double			step_y;
+	double			y_offset;
 }					t_textures;
 
-typedef struct	s_data {
+typedef struct s_data {
 	t_player	*player;
 	t_textures	*textures;
 	t_ray		*ray;
@@ -126,8 +126,8 @@ typedef struct	s_data {
 	mlx_image_t	*img;
 	mlx_image_t	*map_img;
 	char		**map;
-	int			mapHeigth;
-	int			mapwidth;
+	int			map_heigth;
+	int			map_width;
 	t_rgb		floor;
 	t_rgb		ceiling;
 }				t_data;
