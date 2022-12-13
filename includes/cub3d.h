@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 02:14:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:18:25 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:25:05 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 /* Private libraries */
 # include "structs.h"
 
-# define SCREENWIDTH 624
-# define SCREENHEIGHT 624
+# define SCREENWIDTH 1080
+# define SCREENHEIGHT 1080
 # define PI 3.141592653
 # define FOV 70
 # define RAD 0.0174532925
