@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:18:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:30:47 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/13 02:41:33 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,36 +41,32 @@ static void	set_textures_side(t_textures *textures, t_ray *ray)
 		textures->texture = textures->texture_S;
 }
 
-static double	map_line_heigth(t_data *data, t_textures *textures, t_ray *ray)
+static double	map_line_tex(t_data *data, t_textures *tex, t_ray *ray, int lh)
 {
-	double	line_heigth;
-
-	line_heigth = SCREENHEIGHT / ray->distance;
+	lh = SCREENHEIGHT / ray->distance;
 	if (ray->side == 0)
 	{
-		textures->tx = data->player->posY + ray->distance * ray->dirY;
-		textures->tx -= floor((textures->tx));
-		textures->tx *= textures->texture->width;
+		tex->tx = data->player->posY + ray->distance * ray->dirY;
+		tex->tx = (tex->tx - floor((tex->tx))) * tex->texture->width;
 		if (ray->dirX > 0)
-			textures->tx = (textures->texture->width) - textures->tx;
+			tex->tx = (tex->texture->width) - tex->tx;
 	}
 	else
 	{
-		textures->tx = data->player->posX + ray->distance * ray->dirX;
-		textures->tx -= floor((textures->tx));
-		textures->tx *= textures->texture->width;
+		tex->tx = data->player->posX + ray->distance * ray->dirX;
+		tex->tx = (tex->tx - floor((tex->tx))) * tex->texture->width;
 		if (ray->dirY < 0)
-			textures->tx = textures->texture->width - textures->tx;
+			tex->tx = tex->texture->width - tex->tx;
 	}
-	textures->texture_step_y = textures->texture->height / (float)line_heigth;
-	textures->ty_offset = 0;
-	if (line_heigth > SCREENHEIGHT)
+	tex->texture_step_y = tex->texture->height / (float)lh;
+	tex->ty_offset = 0;
+	if (lh > SCREENHEIGHT)
 	{
-		textures->ty_offset = (line_heigth - SCREENHEIGHT) / 2.0;
-		line_heigth = SCREENHEIGHT;
+		tex->ty_offset = (lh - SCREENHEIGHT) / 2.0;
+		lh = SCREENHEIGHT;
 	}
-	textures->ty = (textures->ty_offset * textures->texture_step_y);
-	return (line_heigth);
+	tex->ty = (tex->ty_offset * tex->texture_step_y);
+	return (lh);
 }
 
 void	build_wall(t_data *data, int x)
@@ -82,7 +78,7 @@ void	build_wall(t_data *data, int x)
 
 	textures = data->textures;
 	set_textures_side(textures, data->ray);
-	line_heigth = map_line_heigth(data, textures, data->ray);
+	line_heigth = map_line_tex(data, textures, data->ray, 0);
 	i = 0;
 	while (i < SCREENHEIGHT)
 	{
