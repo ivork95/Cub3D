@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 00:55:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 18:54:38 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:25:51 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,12 @@ void	key_press(void *param)
 	t_data	*data;
 
 	data = param;
+	data->player->move_speed = 5 * data->mlx->delta_time;
+	data->player->rot_speed = 1.5 * data->mlx->delta_time;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		exit(EXIT_SUCCESS);
+	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT_SHIFT))
+		data->player->move_speed = data->player->move_speed * 2;
 	rotate_left(data->player, data->mlx);
 	rotate_right(data->player, data->mlx);
 	move_up_down(data->player, data->mlx, data->map);

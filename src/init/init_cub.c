@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:12:46 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 14:29:19 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:18:58 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,9 @@ static void	init_player_settings(t_data *data, t_cub *cub)
 		printf("maloc failure");
 		exit(1);
 	}
-	data->player->pos_x = cub->start_pos[1];
-	data->player->pos_y = cub->start_pos[0];
+	data->player->pos_x = cub->start_pos[1] + 0.5;
+	data->player->pos_y = cub->start_pos[0] + 0.5;
 	data->player->orientation = cub->orientation;
-	data->player->move_speed = 0.1;
-	data->player->rot_speed = 0.05;
 	set_start_pos(data);
 }
 
