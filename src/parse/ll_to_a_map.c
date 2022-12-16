@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 11:44:36 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/16 14:34:24 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:41:06 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,6 @@ static char	**calloc_a_map(t_map_element *map_element)
 	return (a_map);
 }
 
-/*
-Regel 83 zou weg kunnen. Maar dan zijn de characters
-die de map opvullen om het vierkant te maken '\0' chars
-*/
 char	**ll_to_a_map(t_map_element *map_element)
 {
 	int		i;
@@ -93,13 +89,15 @@ char	**ll_to_a_map(t_map_element *map_element)
 	i = 0;
 	a_map = calloc_a_map(map_element);
 	if (!a_map)
-	put_exit_fail("Error\nmalloc()");
+		put_exit_fail("Error\nmalloc()");
 	map_col_size = get_map_col_size(map_element);
 	while (map_element)
 	{
 		if (map_element->type == E_MAP && map_element->map_element)
 		{
 			a_map[i] = ft_calloc(map_col_size + 1, sizeof(*(a_map[i])));
+			if (!(a_map[i]))
+				put_exit_fail("Error\nmalloc()");
 			ft_memset(a_map[i], 'X', map_col_size);
 			ft_memcpy(a_map[i], map_element->map_element,
 				ft_strlen(map_element->map_element));
