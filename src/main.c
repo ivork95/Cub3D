@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:08:19 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/16 15:05:56 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 16:00:09 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,5 @@ int	main(int argc, char *argv[argc + 1])
 	mlx_loop_hook(data->mlx, &key_press, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
+	return (0);
 }
