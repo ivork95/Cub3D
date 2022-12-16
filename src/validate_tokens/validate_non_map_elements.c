@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:18:26 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:25:58 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,7 @@ bool	has_two_unique_fcs(t_map_element *map_element)
 		{
 			splitted_array = ft_split(map_element->map_element, ' ');
 			if (!splitted_array)
-			{
-				perror("Error\nmalloc()");
-				exit(EXIT_FAILURE);
-			}
+				put_exit_fail("Error\nmalloc()");
 			if (!ft_strncmp(splitted_array[0], "F\0", 2))
 				has_floor = true;
 			else if (!ft_strncmp(splitted_array[0], "C\0", 2))
