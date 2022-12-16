@@ -6,11 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/08 16:10:59 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/16 14:42:50 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/validate_tokens.h"
+#include "validate_tokens.h"
 
 static bool	is_start_pos(char c)
 {

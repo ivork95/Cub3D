@@ -6,11 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 16:28:12 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/16 14:42:44 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/validate_tokens.h"
+#include "validate_tokens.h"
 
 void	init_has_c(t_has_c *data)
 {

@@ -6,13 +6,12 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:12:46 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/16 14:18:58 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:04:59 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "cub3d.h"
+#include "utils.h"
 
 static void	set_start_pos(t_data *data)
 {
@@ -46,10 +45,7 @@ static void	init_player_settings(t_data *data, t_cub *cub)
 {
 	data->player = malloc(sizeof(t_player));
 	if (!data->player)
-	{
-		printf("maloc failure");
-		exit(1);
-	}
+		put_exit_fail("Error\nMalloc()\n");
 	data->player->pos_x = cub->start_pos[1] + 0.5;
 	data->player->pos_y = cub->start_pos[0] + 0.5;
 	data->player->orientation = cub->orientation;
@@ -62,14 +58,11 @@ static t_data	*init_window(void)
 
 	data = malloc(sizeof(t_data));
 	if (!data)
-	{
-		printf("malloc failure\n");
-		exit(1);
-	}
+		put_exit_fail("Error\nMalloc()\n");
 	data->mlx = mlx_init((const uint32_t)SCREENWIDTH,
 			(const uint32_t)SCREENHEIGHT, "Cub3d", false);
 	if (!data->mlx)
-		exit(EXIT_FAILURE);
+		put_exit_fail("Error\nMLX()\n");
 	return (data);
 }
 
@@ -77,20 +70,14 @@ static void	init_textures(t_data *data, t_cub *cub)
 {
 	data->textures = malloc(sizeof(t_textures));
 	if (!data->textures)
-	{
-		printf("malloc failure\n");
-		exit(1);
-	}
+		put_exit_fail("Error\nMalloc()\n");
 	data->textures->texture_north = mlx_load_png(cub->no_path[1]);
 	data->textures->texture_south = mlx_load_png(cub->so_path[1]);
 	data->textures->texture_west = mlx_load_png(cub->we_path[1]);
 	data->textures->texture_east = mlx_load_png(cub->ea_path[1]);
 	if (!data->textures->texture_north || !data->textures->texture_east
 		|| !data->textures->texture_west || !data->textures->texture_south)
-	{
-		printf("failed to load texture\n");
-		exit(1);
-	}
+		put_exit_fail("failed to load texture\n");
 }
 
 t_data	*init_data(t_cub *cub)
@@ -107,9 +94,6 @@ t_data	*init_data(t_cub *cub)
 	init_textures(data, cub);
 	data->ray = malloc(sizeof(t_ray));
 	if (!data->ray)
-	{
-		printf("maloc failure");
-		exit(1);
-	}
+		put_exit_fail("Error\nMalloc()\n");
 	return (data);
 }

@@ -6,11 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:18:26 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/16 14:43:02 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/validate_tokens.h"
+#include "validate_tokens.h"
 
 bool	has_four_cardinals(t_map_element *map_element)
 {

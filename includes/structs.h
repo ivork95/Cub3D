@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 12:07:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/13 15:22:48 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:48:30 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 /* MLX42 */
 # include "../MLX42/include/MLX42/MLX42.h"
 
-/* parser */
+/* Parser */
 typedef struct s_stl_data
 {
 	const char	*s;
@@ -76,8 +76,7 @@ typedef struct s_cub
 	t_rgb	ceiling;
 }	t_cub;
 
-/*graphics*/
-
+/* Graphics */
 typedef struct s_player{
 	double	pos_x;
 	double	pos_y;

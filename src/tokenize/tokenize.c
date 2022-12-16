@@ -6,11 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 11:59:44 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/13 16:18:29 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/tokenize.h"
+#include "tokenize.h"
 
 static t_map_element	*init_map_element(char *map_element, int type,
 	int sub_type)

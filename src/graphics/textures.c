@@ -6,12 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:18:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/15 14:48:02 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
-#include <math.h>
+#include "cub3d.h"
 
 static int	get_rgba(mlx_texture_t *texture, int x, int y)
 {

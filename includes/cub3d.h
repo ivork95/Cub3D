@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 02:14:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:25:05 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:57:47 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 
 /* Private libraries */
 # include "structs.h"
+
+/* Public libraries */
+# include <math.h>
+# include <stdlib.h>
 
 # define SCREENWIDTH 1080
 # define SCREENHEIGHT 1080

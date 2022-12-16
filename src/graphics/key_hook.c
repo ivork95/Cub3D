@@ -6,13 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/12 00:55:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/16 14:25:51 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
-#include "../../libft/libft.h"
-#include <math.h>
+#include "cub3d.h"
 
 static void	rotate_right(t_player *player, mlx_t *mlx)
 {

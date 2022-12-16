@@ -6,11 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 18:37:22 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/01 12:25:43 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/utils.h"
+#include "utils.h"
 
 void	print_splitted_a(char **split_a)
 {

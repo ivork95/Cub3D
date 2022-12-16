@@ -6,13 +6,12 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:08:19 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 16:12:46 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:05:56 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include "../includes/cub3d.h"
-#include "../includes/tokenize.h"
+#include "cub3d.h"
+#include "tokenize.h"
 
 int	create_image(t_data *data)
 {

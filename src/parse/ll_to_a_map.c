@@ -6,11 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 11:44:36 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/16 14:41:06 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "parse.h"
 
 void	x_flip_map(char **a_map)
 {

@@ -6,11 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 14:57:40 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/01 12:23:01 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/ft_strtol.h"
+#include "ft_strtol.h"
 
 static void	handle_endptr(t_stl_data *data, char **endptr, const char *nptr)
 {

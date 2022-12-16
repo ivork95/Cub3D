@@ -6,18 +6,14 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:07:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/16 14:43:14 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:07:33 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include "../includes/parse.h"
-#include "../includes/tokenize.h"
-#include "../includes/validate_tokens.h"
+#include "validate_tokens.h"
+#include "tokenize.h"
+#include "parse.h"
 
 bool	is_dot_cub_file(char *arg)
 {

@@ -32,7 +32,7 @@ OBJECTS :=	obj/ft_strtol_utils.o \
 			obj/init_cub.o \
 			obj/textures.o
 LDFLAGS ?=
-CFLAGS ?=	-Wall -Wextra -g
+CFLAGS ?=	-Wall -Wextra -Werror -g -I./includes/
 LIBFT :=	./libft
 MLX_DIR 	:= MLX42
 MLX_LIB 	:= libmlx42.a

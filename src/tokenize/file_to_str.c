@@ -6,11 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 11:56:56 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/13 16:18:06 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/tokenize.h"
+#include "tokenize.h"
 
 bool	is_directory(const char *map_name)
 {
