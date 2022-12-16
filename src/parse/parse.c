@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 16:57:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/16 15:02:43 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:27:58 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,11 @@ int	convert_to_int(char *str)
 	errno = 0;
 	val = ft_strtol(str, &endptr);
 	if (errno != 0)
-	{
-		perror("Error\nstrtol()");
-		exit(EXIT_FAILURE);
-	}
+		put_exit_fail("Error\nstrtol()");
 	if (endptr == str)
 		put_exit_fail("Error\nno digits were found\n");
 	if (*endptr != '\0')
-	{
+	{	
 		printf("Error\nfound characters after number: \"%s\"\n", endptr);
 		exit(EXIT_FAILURE);
 	}
