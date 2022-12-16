@@ -6,11 +6,34 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 11:44:36 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/13 16:17:40 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:34:24 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parse.h"
+
+void	x_flip_map(char **a_map)
+{
+	char	**dup;
+	int		i;
+	int		len;
+	char	tmp;
+
+	dup = a_map;
+	while (*dup)
+	{
+		i = 0;
+		len = ft_strlen(*dup);
+		while (i < (len / 2))
+		{
+			tmp = (*dup)[len - i - 1];
+			(*dup)[len - i - 1] = (*dup)[i];
+			(*dup)[i] = tmp;
+			i++;
+		}
+		dup++;
+	}
+}
 
 int	get_map_size(t_map_element *map_element)
 {
@@ -70,10 +93,7 @@ char	**ll_to_a_map(t_map_element *map_element)
 	i = 0;
 	a_map = calloc_a_map(map_element);
 	if (!a_map)
-	{
-		perror("Error\nmalloc()");
-		exit(EXIT_FAILURE);
-	}
+	put_exit_fail("Error\nmalloc()");
 	map_col_size = get_map_col_size(map_element);
 	while (map_element)
 	{
@@ -87,5 +107,6 @@ char	**ll_to_a_map(t_map_element *map_element)
 		}
 		map_element = map_element->next;
 	}
+	x_flip_map(a_map);
 	return (a_map);
 }
