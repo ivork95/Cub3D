@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:18:31 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 02:55:24 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/15 14:48:02 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	set_textures_side(t_textures *textures, t_ray *ray)
 		textures->texture = textures->texture_west;
 	else if (ray->side == 0)
 		textures->texture = textures->texture_east;
-	else if (ray->side == 1 && ray->dir_y < 0)
+	else if (ray->side == 1 && ray->dir_y > 0)
 		textures->texture = textures->texture_north;
 	else
 		textures->texture = textures->texture_south;
