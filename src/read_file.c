@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:07:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/16 15:07:33 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 15:42:19 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,5 @@ t_cub	*read_file(char *file_name)
 	validate_tokens(map_element);
 	cub = parser(map_element);
 	free_map_elements(map_element);
-	print_cub(cub);
-	printf("Map is valid!\n");
 	return (cub);
 }
