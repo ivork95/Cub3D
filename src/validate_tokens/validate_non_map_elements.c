@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 17:18:26 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/13 16:19:16 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:43:02 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ static void	helper_cardinals(char *first_part, t_has_c *data)
 		data->has_ea = true;
 }
 
-/*
-Moet nog getest worden
-*/
 bool	has_four_unique_cardinals(t_map_element *map_element)
 {
 	t_has_c	data;

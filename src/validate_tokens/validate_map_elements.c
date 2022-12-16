@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 16:28:12 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/01 12:26:22 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:42:44 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,6 @@ void	init_has_c(t_has_c *data)
 	data->has_ea = false;
 }
 
-/*
-Except for the map content which always has to be the last, each type of
-element can be set in any order in the file.
-*/
 bool	is_sorted(t_map_element *map_element)
 {
 	bool	has_encountered_type_three;
@@ -56,12 +52,6 @@ bool	has_three_map_elements_min(t_map_element *map_element)
 	return (false);
 }
 
-/*
-The map must be composed of only 6 possible characters: 0 for an empty space,
-1 for a wall, and N,S,E or W for the player’s start position and spawning
-orientation.
-Moet nog getest worden
-*/
 bool	has_invalid_chars(t_map_element *map_element)
 {
 	char	*dup;

@@ -6,17 +6,12 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 16:57:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/13 16:16:50 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:42:15 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parse.h"
 
-/*
-De info kan alleen seperated worden door 1 of meer spaces
-dus er moeten getalen en kommas in zitten
-   F   2 2 2 , 1 0  0  ,   0    is een valid floor color
-*/
 int	strip_spaces(char *s)
 {
 	char	*p2;

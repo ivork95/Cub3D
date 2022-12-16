@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 00:07:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/12/13 16:17:22 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:43:14 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@
 #include "../includes/tokenize.h"
 #include "../includes/validate_tokens.h"
 
-/*
-Your program must take as a first argument a scene description file with the .cub
-extension.
-*/
 bool	is_dot_cub_file(char *arg)
 {
 	size_t	len;
@@ -37,10 +33,6 @@ bool	is_dot_cub_file(char *arg)
 	return (true);
 }
 
-/*
-Except for the map content, each type of element can be separated by one or
-more empty line(s).
-*/
 t_map_element	*tokenizer(const char *map_name)
 {
 	int				map_fd;
@@ -68,10 +60,6 @@ t_map_element	*tokenizer(const char *map_name)
 	return (map_elements);
 }
 
-/*
-Todo: check voor minimum aantal bytes van een 
-valid map (kleinste paths + kleinste map)
-*/
 void	validate_tokens(t_map_element *map_element)
 {
 	if (!has_four_cardinals(map_element))

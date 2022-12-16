@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/08 16:10:59 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/12/13 16:19:02 by ivork         ########   odam.nl         */
+/*   Updated: 2022/12/16 14:42:50 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ static bool	is_start_pos(char c)
 	return (false);
 }
 
-/*
-* Int returnen is op zich niet nodig
-* Kan ook gewoon position returnen omdat
-* checks al eerder gebeuren
-*/
 int	get_start_pos(char **two_d_a, int start_pos[2])
 {
 	int	sr;
@@ -57,9 +52,6 @@ static void	pop(t_stack **stack)
 	*stack = (*stack)->next;
 }
 
-/*
-Herschrijf om return en single pointer te gebruiken
-*/
 static void	push(t_stack **stack, int cr, int cc)
 {
 	t_stack	*node;
@@ -76,10 +68,6 @@ static void	push(t_stack **stack, int cr, int cc)
 	*stack = node;
 }
 
-/*
-The map must be closed/surrounded by walls, if not the program must return
-an error.
-*/
 bool	itter_floodfill(char *map[], int pos[2], int rows, int cols)
 {
 	t_stack	*stack;
